@@ -1,18 +1,29 @@
 import Head from 'next/head';
-import Image from 'next/image';
-import { Inter } from 'next/font/google';
-import styles from '@/styles/Home.module.css';
+import WebLayout from '@/layouts/user/webLayout';
+// import styles from '@/styles/Home.module.css';
 
-const inter = Inter({
-  subsets: ['latin'],
-});
-const a = () => {
-  console.log(
-    'asdjadjkalsdnasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasjgbhdsasdsadasdasdsdasd'
-  );
-};
+import Carousel from '@/components/user/carousel';
+import { sliders } from '@/data/slider';
+import Slide from '@/components/user/carousel/Slide';
 
 export default function Home() {
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    cssEase: 'linear',
+    // nextArrow: <NextArrow to="next" />,
+    // prevArrow: <PrevArrow to="prev" />,
+    // appendDots: (dots: string) => (
+    //   <div className="bg-transparent !pb-[40px]">
+    //     <ul> {dots} </ul>
+    //   </div>
+    // ),
+  };
   return (
     <>
       <Head>
@@ -21,7 +32,15 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className={styles.container}></div>
+      <WebLayout>
+        <div className="w-[75%]">
+          <Carousel settings={settings}>
+            {sliders?.map((slide) => (
+              <Slide key={slide.id} {...slide} />
+            ))}
+          </Carousel>
+        </div>
+      </WebLayout>
     </>
   );
 }
