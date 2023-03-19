@@ -8,6 +8,11 @@
   html {
     font-family: 'Poppins', sans-serif;
     color: white;
+    background: rgb(239, 239, 239);
+  }
+  ul,
+  li {
+    list-style: none;
   }
   img {
     width: 100%;
@@ -63,4 +68,39 @@ svg path {
 .slick-track {
   display: flex;
   align-item: center;
+}
+
+.slick-dots {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+}
+
+.slick-dots ul li {
+  position: relative;
+  display: inline-block;
+  /* width: 30px; */
+  height: 5px;
+  margin: 0 2px;
+  padding: 0;
+  cursor: pointer;
+  transition: width 0.3s ease-in-out;
+}
+
+.slick-dots ul li button {
+  font-size: 0;
+  display: block;
+  width: 15px;
+  height: inherit;
+  border: 0;
+  outline: none;
+  background: white;
+  border-radius: 3px;
+  transition: width 0.3s ease-in-out;
+  opacity: 0.4;
+}
+
+.slick-dots ul .slick-active button {
+  width: 30px;
+  opacity: 1;
 }

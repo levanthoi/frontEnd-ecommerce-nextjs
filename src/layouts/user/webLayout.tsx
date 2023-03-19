@@ -15,7 +15,7 @@ const WebLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     <div className="flex flex-col min-h-[100vh] px-16">
       <NextNProgress />
       <Header />
-      <main className="flex-grow md:mt-[6rem] text-slate-900">{children}</main>
+      <main className="flex-grow md:mt-[7rem] text-slate-800">{children}</main>
       <Footer />
     </div>
   );

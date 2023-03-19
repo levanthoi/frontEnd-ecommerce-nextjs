@@ -1,5 +1,6 @@
 import React from 'react';
 import { AiOutlineArrowDown } from 'react-icons/ai';
+import Link from 'next/link';
 
 import { dataNavbars } from '@/data/navbars';
 
@@ -10,19 +11,19 @@ const Navbar = () => {
         {dataNavbars?.map((item) => {
           return (
             <li key={item?.id} className="relative">
-              <a
+              <Link
                 href={item?.slug}
                 className={`${item?.children ? 'capitalize flex' : 'capitalize'}`}
               >
                 {item?.title}
                 {item?.children && <AiOutlineArrowDown />}
-              </a>
+              </Link>
               {item?.children && (
                 <ul className="relative hidden">
                   {item?.children?.map((child) => {
                     return (
                       <li key={child?.category?.id}>
-                        <a href="/">{child?.category?.title}</a>
+                        <Link href="/">{child?.category?.title}</Link>
                         <ul>
                           {child?.productsGroup?.map((product) => (
                             <li key={product}>{product}</li>

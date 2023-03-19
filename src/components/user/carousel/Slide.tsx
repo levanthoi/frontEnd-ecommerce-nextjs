@@ -13,7 +13,7 @@ const Slide: React.FC<Props> = ({ slug, title, image }) => {
   return (
     <Link href={slug}>
       {/* <Image src={image} alt={title} width={800} height={400} /> */}
-      <div className="h-[400px]">
+      <div className="h-full">
         <img src={image} alt={title} className="rounded-lg" />
       </div>
     </Link>

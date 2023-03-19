@@ -67,5 +67,6 @@ module.exports = {
     '@next/next/no-html-link-for-pages': 'off',
     'no-console': 'off',
     'no-underscore-dangle': 'off',
+    'react/require-default-props': 'off',
   },
 };

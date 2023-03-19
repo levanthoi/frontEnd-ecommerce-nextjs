@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const lineCamp = require('@tailwindcss/line-clamp');
+
 module.exports = {
   content: [
     './app/**/*.{js,ts,jsx,tsx}',
@@ -24,6 +26,18 @@ module.exports = {
       center: true,
       padding: '2rem',
     },
+    keyframes: {
+      brand: {
+        '0%': { height: '0' },
+        '100%': { height: '100%', opacity: '0' },
+      },
+    },
+    animation: {
+      brandEntering: 'brand 0.4s ease-in-out forwards',
+    },
   },
-  plugins: [],
+  plugins: [
+    lineCamp,
+    // require('@tailwindcss/line-clamp'),
+  ],
 };
