@@ -4,6 +4,8 @@ import dynamic from 'next/dynamic';
 import Logo from './Logo';
 import SearchBar from './SearchBar';
 import Menu from '@/components/user/header/menu';
+import Language from '@/components/user/header/language';
+import Theme from '@/components/user/header/theme';
 
 const UserBox = dynamic(() => import('@/components/user/header/user'), {
   ssr: false,
@@ -24,7 +26,11 @@ const Header = () => {
               </div>
               <UserBox />
             </div>
-            <Menu />
+            <div className="flex justify-start w-full">
+              <Menu />
+              <Language />
+              <Theme />
+            </div>
           </div>
         </div>
       </div>

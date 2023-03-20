@@ -46,7 +46,7 @@ You can visit and explore in the ZiShop template at
 
 <!-- - Fully responsive -->
 
-- Multi-language (EN-FA)
+- Multi-language (VI-EN)
 <!-- - Multi-theme (Dark/Light) -->
 
 ## 📃Pages

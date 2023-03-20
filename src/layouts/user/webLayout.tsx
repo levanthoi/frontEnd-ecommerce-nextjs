@@ -12,7 +12,7 @@ import Footer from '@/components/user/footer';
 
 const WebLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <div className="flex flex-col min-h-[100vh] px-16">
+    <div className="flex flex-col min-h-[100vh]">
       <NextNProgress />
       <Header />
       <main className="flex-grow md:mt-[7rem] text-slate-800">{children}</main>

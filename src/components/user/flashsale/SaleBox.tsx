@@ -17,7 +17,7 @@ const SaleBox: React.FC<Props> = ({ product }) => {
             <img src={product?.image} alt={product?.title} />
           </div>
           <p className="truncate text-base">{product?.title}</p>
-          <ProductPrice />
+          <ProductPrice price={product.price} />
           <Sold />
         </Link>
       </div>

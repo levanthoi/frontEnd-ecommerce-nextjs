@@ -11,8 +11,7 @@ export const products = [
   {
     id: 2,
     title: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-    image:
-      'https://images.samsung.com/is/image/samsung/p6pim/vn/sm-a546elvcxxv/gallery/vn-galaxy-a54-5g-sm-a546-sm-a546elvcxxv-535765758?$650_519_PNG$',
+    image: '/product1.webp',
     sold: 999,
     quantity: 999,
     price: 200000,
@@ -21,7 +20,7 @@ export const products = [
   {
     id: 3,
     title: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-    image: '/oppo.png',
+    image: '/product1.webp',
     sold: 999,
     quantity: 999,
     price: 200000,
