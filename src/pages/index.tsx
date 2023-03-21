@@ -12,6 +12,8 @@ const PromotionNews = dynamic(() => import('@/components/user/promotionNews'));
 const Category = dynamic(() => import('@/components/user/category'));
 const Banner = dynamic(() => import('@/components/user/banner'));
 const FlashSale = dynamic(() => import('@/components/user/flashsale'));
+const TabProduct = dynamic(() => import('@/components/user/tabProduct'));
+const Trending = dynamic(() => import('@/components/user/trending'));
 
 const settings = {
   dots: true,
@@ -55,6 +57,8 @@ export default function Home() {
         <Category />
         <Banner />
         <FlashSale />
+        <TabProduct />
+        <Trending />
       </WebLayout>
     </>
   );

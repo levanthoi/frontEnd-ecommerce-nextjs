@@ -6,6 +6,8 @@ const en: {[key:string] :string} ={
     featuredCategory: "Category of Goods",
     flashSale: "flash sale - technology accessories",
     seeAll: "See All",
+    seeAllProduct: "See All Products",
     solded: "Solded",
+    trending: "Top Trending",
 }
 export default en;

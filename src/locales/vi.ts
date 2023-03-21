@@ -6,6 +6,8 @@
     featuredCategory: "Danh mục nổi bật",
     flashSale: "flash sale - phụ kiện công nghệ",
     seeAll: "Xem tất cả",
+    seeAllProduct: "Xem tất cả sản phẩm",
     solded: "Đã bán",
+    trending: "Xu hướng",
 }
 export default vi

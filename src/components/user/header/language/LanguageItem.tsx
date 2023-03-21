@@ -5,7 +5,7 @@ import { useLanguage } from '@/hooks/useLanguage';
 
 interface Props {
   language: string;
-  onClose: (isOpen: boolean) => void;
+  onClose: any;
 }
 
 const LanguageItem: React.FC<Props> = ({ language, onClose }) => {
