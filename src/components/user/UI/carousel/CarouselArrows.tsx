@@ -12,7 +12,8 @@ export const NextArrow: React.FC<Props> = ({ className, onClick, style }) => {
   return (
     <button
       type="button"
-      className={`${className} absolute top-1/2 right-0 -translate-y-full z-10 w-10 h-10 bg-transparent rounded-full`}
+      className={` absolute top-1/2 right-0 -translate-y-full z-10 w-10 h-10 bg-transparent rounded-full
+       ${className}`}
       style={{ ...style }}
       onClick={onClick}
       // aria-label={to}
@@ -25,7 +26,7 @@ export const PrevArrow: React.FC<Props> = ({ className, onClick, style }) => {
   return (
     <button
       type="button"
-      className={`${className} absolute top-1/2 left-0 -translate-y-full z-10 w-10 h-10 bg-transparent rounded-full`}
+      className={` absolute top-1/2 left-0 -translate-y-full z-10 w-10 h-10 bg-transparent rounded-full ${className}`}
       style={{ ...style }}
       onClick={onClick}
       // aria-label={to}

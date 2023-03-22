@@ -9,5 +9,7 @@ const en: {[key:string] :string} ={
     seeAllProduct: "See All Products",
     solded: "Solded",
     trending: "Top Trending",
+    featuredPhone: "Featured Phone",
+    laptopHot: "Laptop Hot",
 }
 export default en;

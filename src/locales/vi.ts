@@ -9,5 +9,7 @@
     seeAllProduct: "Xem tất cả sản phẩm",
     solded: "Đã bán",
     trending: "Xu hướng",
+    featuredPhone: "Điện thoại nổi bật",
+    laptopHot: "Laptop Hot",
 }
 export default vi

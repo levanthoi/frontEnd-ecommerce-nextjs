@@ -5,7 +5,7 @@ import PaymentMethod from '@/components/user/footer/footerContent/PaymentMethod'
 
 const Footer = () => {
   return (
-    <footer className="text-slate-900 mt-12 px-4 py-8">
+    <footer className="text-slate-900 mt-12 px-4 py-8 border-t border-zinc-400">
       <div className="flex">
         <FooterColumn />
         <div className="ml-16">

@@ -10,17 +10,15 @@ interface Props {
 
 const Card: React.FC<Props> = ({ product }) => {
   return (
-    <div className="col-span-2 relative rounded-md border border-slate-50 shadow-md shadow-slate-200 p-2">
+    <div className="group col-span-2 relative rounded-md border border-slate-50 shadow-md shadow-slate-200 p-2">
       <Link href="/">
-        <div>
-          <div className="">
-            <img src={product.image} alt={product.title} />
-          </div>
-          <p className="text-base line-clamp-2">{product?.title}</p>
-          <ProductPrice price={product?.price} />
+        <div className="">
+          <img src={product.image} alt={product.title} />
         </div>
+        <p className="text-base line-clamp-2">{product?.title}</p>
+        <ProductPrice price={product?.price} />
       </Link>
-      <CardActions product={product} />
+      <CardActions product={product} className="group-hover:opacity-100" />
     </div>
   );
 };

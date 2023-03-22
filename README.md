@@ -40,7 +40,7 @@ An E-commerce site template, implemented with [Next.js](https://nextjs.org/) and
 
 ## ✨Demo
 
-You can visit and explore in the ZiShop template at
+You can visit Demo: <a href="https://ecommerce-nextjs-neon.vercel.app/">E-commerce</a>
 
 ## 🔥Features
 

@@ -1,10 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
 
-// interface window {
-//     width: number,
-//     height: number
-//   }
-
 export const useWindowDemension = () => {
   let width;
   let height;
