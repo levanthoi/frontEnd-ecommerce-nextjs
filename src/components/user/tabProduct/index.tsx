@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { products } from '@/data/products';
 import Card from '../UI/card/Card';
 import TabLink from './TabLink';
@@ -9,8 +9,12 @@ import { useLanguage } from '@/hooks/useLanguage';
 const TabProduct = () => {
   const { width } = useWindowDemension();
   const { t } = useLanguage();
+  const [numProductToShow, setNumProductToShow] = useState(8);
 
-  const numProductToShow = width >= 1536 ? 12 : 8;
+  useEffect(() => {
+    if (width >= 1536) setNumProductToShow(12);
+    else setNumProductToShow(8);
+  }, [width]);
 
   return (
     <div className="bg-white p-3 rounded-md">

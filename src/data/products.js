@@ -147,3 +147,15 @@ export const tabProducts = [
       'https://bizweb.dktcdn.net/100/459/533/collections/icon-desk-51x50-2.png?v=1660661310503',
   },
 ];
+
+export const trendings = [
+  {
+    id: 1,
+    category: {
+      id: 10,
+      title: 'Điện thoại',
+    },
+    description: 'Gía cạnh tranh nhất',
+    productsGroup: [],
+  },
+];
