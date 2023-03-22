@@ -21,7 +21,7 @@ const TrendingBox = () => {
           <b>Điện thoại</b>
         </p>
         <NextArrow
-          className="bg-zinc-300/60 -translate-y-1/2 hover:bg-[#ff6633] hover:translate-x-2 duration-300"
+          className="-translate-y-1/2 bg-zinc-300/60 hover:bg-[#ff6633] hover:translate-x-2 duration-300"
           style={{ textAlign: '-webkit-center' }}
         />
       </div>

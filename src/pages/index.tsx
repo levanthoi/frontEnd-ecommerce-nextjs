@@ -14,6 +14,8 @@ const Banner = dynamic(() => import('@/components/user/banner'));
 const FlashSale = dynamic(() => import('@/components/user/flashsale'));
 const TabProduct = dynamic(() => import('@/components/user/tabProduct'));
 const Trending = dynamic(() => import('@/components/user/trending'));
+const Catalog = dynamic(() => import('@/components/user/catalog'));
+const Brands = dynamic(() => import('@/components/user/brands'));
 
 const settings = {
   dots: true,
@@ -59,6 +61,9 @@ export default function Home() {
         <FlashSale />
         <TabProduct />
         <Trending />
+        <Catalog title="featuredPhone" />
+        <Catalog title="laptopHot" />
+        <Brands />
       </WebLayout>
     </>
   );

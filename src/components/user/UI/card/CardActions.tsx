@@ -5,14 +5,20 @@ import { IProduct } from '@/lib/types/products';
 
 interface Props {
   product: IProduct;
+  className: string;
 }
 
-const CardActions: React.FC<Props> = () => {
+const CardActions: React.FC<Props> = ({ className, product }) => {
   //   console.log(product);
 
   return (
-    <ul className="absolute top-2 left-0 bg-slate-200 rounded-full px-2 py-3">
-      <li className="pt-2 hover:text-red-500 duration-300 cursor-pointer">
+    <ul
+      className={`opacity-0 duration-300 absolute top-2 left-0 bg-slate-200 rounded-full px-2 py-3 ${className}`}
+    >
+      <li
+        className="pt-2 hover:text-red-500 duration-300 cursor-pointer"
+        onClick={() => console.log(product)}
+      >
         <MdOutlineFavoriteBorder size={15} />
       </li>
       <li className="pt-2 hover:text-red-500 duration-300 cursor-pointer">
