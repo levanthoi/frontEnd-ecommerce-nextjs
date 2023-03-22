@@ -40,7 +40,7 @@ An E-commerce site template, implemented with [Next.js](https://nextjs.org/) and
 
 ## ✨Demo
 
-You can visit Demo: <a href="ecommerce-nextjs-neon.vercel.app">E-commerce</a>
+You can visit Demo: <a href="https://ecommerce-nextjs-neon.vercel.app/">E-commerce</a>
 
 ## 🔥Features
 
