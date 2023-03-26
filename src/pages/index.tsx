@@ -1,8 +1,8 @@
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
-import WebLayout from '@/layouts/user/webLayout';
 // import styles from '@/styles/Home.module.css';
 
+import WebLayout from '@/layouts/user/webLayout';
 import Carousel from '@/components/user/carousel';
 import { sliders } from '@/data/slider';
 import Slide from '@/components/user/carousel/Slide';
@@ -44,26 +44,28 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <WebLayout>
-        <div className="flex flex-row bg-white h-[415px] rounded-md">
-          <div className="w-[75%]">
-            <Carousel settings={settings}>
-              {sliders?.map((slide) => (
-                <Slide key={slide.id} {...slide} />
-              ))}
-            </Carousel>
+        <div>
+          <div className="flex flex-row bg-white h-[415px] rounded-md">
+            <div className="w-[75%]">
+              <Carousel settings={settings}>
+                {sliders?.map((slide) => (
+                  <Slide key={slide.id} {...slide} />
+                ))}
+              </Carousel>
+            </div>
+            <div className="ml-4 w-[25%]">
+              <PromotionNews />
+            </div>
           </div>
-          <div className="ml-4 w-[25%]">
-            <PromotionNews />
-          </div>
+          <Category />
+          <Banner />
+          <FlashSale />
+          <TabProduct />
+          <Trending />
+          <Catalog title="featuredPhone" />
+          <Catalog title="laptopHot" />
+          <Brands />
         </div>
-        <Category />
-        <Banner />
-        <FlashSale />
-        <TabProduct />
-        <Trending />
-        <Catalog title="featuredPhone" />
-        <Catalog title="laptopHot" />
-        <Brands />
       </WebLayout>
     </>
   );

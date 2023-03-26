@@ -11,5 +11,12 @@
     trending: "Xu hướng",
     featuredPhone: "Điện thoại nổi bật",
     laptopHot: "Laptop Hot",
+    email: "Email",
+    password: "Mật khẩu",
+    emptyEmail: "Email không được trống!",
+    requiredEmail: "Email sai định dạng!",
+    requiredPassword: "Vui lòng nhập mật khẩu!",
+    emptyPassword: "Password không được trống!",
+    login: "Đăng nhập",
 }
 export default vi
