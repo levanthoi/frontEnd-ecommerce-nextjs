@@ -45,7 +45,7 @@ export default function Home() {
       </Head>
       <WebLayout>
         <div>
-          <div className="flex flex-row bg-white h-[415px] rounded-md">
+          <div className="flex flex-row bg-white h-[415px] rounded-md overflow-hidden">
             <div className="w-[75%]">
               <Carousel settings={settings}>
                 {sliders?.map((slide) => (

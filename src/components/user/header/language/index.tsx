@@ -15,7 +15,7 @@ const Language = () => {
     <div className=" mr-6">
       <button
         type="button"
-        className="flex items-center gap-1 relative"
+        className="flex items-center gap-1 relative bg-transparent"
         onClick={() => setIsOpen((prevState) => !prevState)}
       >
         <p className="font-semibold">{locale === 'vi' ? 'VI' : 'EN'}</p>

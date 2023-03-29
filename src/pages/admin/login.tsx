@@ -1,13 +1,20 @@
 import { Form, Input, Button } from 'antd';
 import React from 'react';
 import { AiOutlineUser, AiFillLock } from 'react-icons/ai';
+import { useDispatch } from 'react-redux';
 import { useLanguage } from '@/hooks/useLanguage';
+import { IAuth } from '@/lib/types/auth';
 
 const Login: React.FC = () => {
   const { t } = useLanguage();
   const [form] = Form.useForm();
-  const handleSubmit = (values: object) => {
+  const dispatch = useDispatch();
+  const handleSubmit = (values: IAuth) => {
     console.log('values', values);
+    dispatch({
+      type: 'user/login',
+      payload: values,
+    });
   };
   return (
     <div className="bg-white max-w-6xl flex items-center justify-center mx-auto text-slate-900">
