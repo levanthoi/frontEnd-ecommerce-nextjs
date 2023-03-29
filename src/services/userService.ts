@@ -7,5 +7,5 @@ import http from '@/utils/config';
 export async function loginAccount(params: any) {
   // console.log(http);
   // console.log('process', process.env.NEXT_PUBLIC_API_SERVER_V1);
-  return http.post(`/api/v1/user/login`, params);
+  return http.post(`/v1/user/login-admin`, params);
 }
