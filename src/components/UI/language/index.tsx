@@ -3,7 +3,11 @@ import { MdLanguage } from 'react-icons/md';
 import { useLanguage } from '@/hooks/useLanguage';
 import LanguageItem from '@/components/UI/language/LanguageItem';
 
-const Language = () => {
+interface Props {
+  classname?: string;
+}
+
+const Language: React.FC<Props> = ({ classname }) => {
   const { locale } = useLanguage();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -12,7 +16,7 @@ const Language = () => {
     setIsOpen(open);
   };
   return (
-    <div className="relative mr-6">
+    <div className={`relative mr-6 ${classname}`}>
       <button
         type="button"
         className="flex items-center gap-1 bg-transparent"

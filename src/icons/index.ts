@@ -1,4 +1,5 @@
 import { AiOutlineMenuFold, AiOutlineMenuUnfold, AiOutlineOrderedList } from 'react-icons/ai';
+import { BiBell } from 'react-icons/bi';
 import { FiSettings, FiUsers } from 'react-icons/fi';
 import { IoBagCheckOutline } from 'react-icons/io5';
 import { MdOutlineProductionQuantityLimits } from 'react-icons/md';
@@ -9,6 +10,7 @@ export {
   AiOutlineMenuFold,
   AiOutlineMenuUnfold,
   AiOutlineOrderedList,
+  BiBell,
   FiUsers,
   FiSettings,
   SiBrandfolder,

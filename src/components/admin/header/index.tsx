@@ -3,6 +3,7 @@ import React from 'react';
 import * as icon from '@/icons';
 import SearchBar from '@/components/UI/SearchBar';
 import Language from '@/components/UI/language';
+import Bell from '@/components/UI/header/bell';
 
 interface Props {
   collapsed: boolean;
@@ -23,7 +24,8 @@ const Header: React.FC<Props> = ({ colorText, bg, collapsed, handleClick }) => {
       <div className="w-[50%]">
         <SearchBar />
       </div>
-      <Language />
+      <Language classname="text-slate-500" />
+      <Bell />
     </Layout.Header>
   );
 };
