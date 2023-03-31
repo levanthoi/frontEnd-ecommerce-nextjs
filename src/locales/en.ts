@@ -21,5 +21,11 @@ const en: { [key: string]: string } = {
   requiredEmail: 'The input is not valid E-mail!',
   requiredPassword: 'Please input your Password!',
   login: 'Log in',
+
+  // admin
+  revenues: 'Revenues',
+  orders: 'Orders',
+  shops: 'Shops',
+  customers: 'Customers',
 };
 export default en;

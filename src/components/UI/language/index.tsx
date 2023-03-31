@@ -28,7 +28,7 @@ const Language: React.FC<Props> = ({ classname }) => {
       {isOpen && (
         <>
           {/* <div className="fixed inset-0 -z-1" onClick={() => setIsOpen(false)} /> */}
-          <ul className="absolute block w-max bg-white text-slate-900 rounded-md p-3 shadow-md shadow-slate-300">
+          <ul className="absolute z-50 block w-max bg-white text-slate-900 rounded-md p-3 shadow-md shadow-slate-300">
             <LanguageItem language="vi" onClose={onClose} />
             <LanguageItem language="en" onClose={onClose} />
           </ul>

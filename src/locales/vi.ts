@@ -22,5 +22,11 @@ const vi: { [key: string]: string } = {
   requiredPassword: 'Vui lòng nhập mật khẩu!',
   emptyPassword: 'Password không được trống!',
   login: 'Đăng nhập',
+
+  // admin
+  revenues: 'Doanh thu',
+  orders: 'Đặt hàng',
+  shops: 'Cửa hàng',
+  customers: 'Khách hàng',
 };
 export default vi;
