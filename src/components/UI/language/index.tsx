@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MdLanguage } from 'react-icons/md';
 import { useLanguage } from '@/hooks/useLanguage';
-import LanguageItem from './LanguageItem';
+import LanguageItem from '@/components/UI/language/LanguageItem';
 
 const Language = () => {
   const { locale } = useLanguage();
@@ -12,10 +12,10 @@ const Language = () => {
     setIsOpen(open);
   };
   return (
-    <div className=" mr-6">
+    <div className="relative mr-6">
       <button
         type="button"
-        className="flex items-center gap-1 relative bg-transparent"
+        className="flex items-center gap-1 bg-transparent"
         onClick={() => setIsOpen((prevState) => !prevState)}
       >
         <p className="font-semibold">{locale === 'vi' ? 'VI' : 'EN'}</p>
@@ -23,8 +23,8 @@ const Language = () => {
       </button>
       {isOpen && (
         <>
-          <div className="fixed inset-0 -z-1" onClick={() => setIsOpen(false)} />
-          <ul className="absolute bg-white text-slate-900 rounded-md right-16 p-3 shadow-md shadow-slate-300">
+          {/* <div className="fixed inset-0 -z-1" onClick={() => setIsOpen(false)} /> */}
+          <ul className="absolute block w-max bg-white text-slate-900 rounded-md p-3 shadow-md shadow-slate-300">
             <LanguageItem language="vi" onClose={onClose} />
             <LanguageItem language="en" onClose={onClose} />
           </ul>

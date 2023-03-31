@@ -2,9 +2,9 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 
 import Logo from './Logo';
-import SearchBar from './SearchBar';
+import SearchBar from '@/components/UI/SearchBar';
 import Menu from '@/components/user/header/menu';
-import Language from '@/components/user/header/language';
+import Language from '@/components/UI/language';
 import Theme from '@/components/user/header/theme';
 
 const UserBox = dynamic(() => import('@/components/user/header/user'), {
@@ -20,13 +20,13 @@ const Header = () => {
             <Logo />
           </div>
           <div className="flex flex-col flex-grow items-center justify-between ml-4">
-            <div className="flex flex-grow w-full">
+            <div className="flex flex-grow items-center w-full">
               <div className="w-[60%]">
                 <SearchBar />
               </div>
               <UserBox />
             </div>
-            <div className="flex justify-start w-full">
+            <div className="flex justify-start w-full pr-20">
               <Menu />
               <Language />
               <Theme />

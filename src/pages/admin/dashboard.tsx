@@ -1,7 +1,8 @@
 import React from 'react';
+import AdminLayout from '@/layouts/admin/AdminLayout';
 
-const Dashboard = () => {
-  return <div>Dashboard</div>;
+const Dashboard: React.FC = () => {
+  return <AdminLayout>Dashboard</AdminLayout>;
 };
 
 export default Dashboard;
