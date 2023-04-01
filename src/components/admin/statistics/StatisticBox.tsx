@@ -22,7 +22,7 @@ const StatisticBox: React.FC<Props> = ({ color, bg, Icon, val, title }) => {
         <Row justify="space-between" align="middle" className="group">
           <Col>
             <h3 className="font-bold text-slate-700 text-lg">{val}</h3>
-            <Link href="/" className="group-hover:italic duration-200">
+            <Link href={`/admin/${title}`} className="group-hover:italic duration-200">
               {t.seeAll}
               <span>
                 <icon.AiOutlineArrowRight className="opacity-0 group-hover:opacity-100 duration-200" />

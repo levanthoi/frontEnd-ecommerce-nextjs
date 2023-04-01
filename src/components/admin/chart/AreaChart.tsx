@@ -36,7 +36,20 @@ export const options = {
   },
 };
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+const labels = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
 
 export const data = {
   labels,
@@ -52,6 +65,11 @@ export const data = {
         '2234000000',
         '230000000',
         '2330000000',
+        '2230000000',
+        '2630000000',
+        '2380000000',
+        '2333000000',
+        '1330000000',
       ],
       borderColor: 'rgb(53, 162, 235)',
       backgroundColor: 'rgba(53, 162, 235, 0.5)',
