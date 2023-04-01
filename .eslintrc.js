@@ -66,6 +66,7 @@ module.exports = {
     '@next/next/no-img-element': 'off',
     '@next/next/no-html-link-for-pages': 'off',
     'no-console': 'off',
+    'no-unused-vars': 'off',
     'no-underscore-dangle': 'off',
     'no-unneeded-ternary': 'off',
     'react/require-default-props': 'off',

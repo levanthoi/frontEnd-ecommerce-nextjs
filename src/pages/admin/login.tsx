@@ -1,20 +1,43 @@
+import React, { useEffect } from 'react';
+import Cookies from 'js-cookie';
 import { Form, Input, Button } from 'antd';
-import React from 'react';
+import { useRouter } from 'next/router';
 import { AiOutlineUser, AiFillLock } from 'react-icons/ai';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useLanguage } from '@/hooks/useLanguage';
 import { IAuth } from '@/lib/types/auth';
+import { RootState } from '@/redux/reducers/rootReducer';
+import { CusNotification } from '@/components/UI/CusNotification';
 
 const Login: React.FC = () => {
   const { t } = useLanguage();
+  const router = useRouter();
   const [form] = Form.useForm();
   const dispatch = useDispatch();
+  const { data, message } = useSelector((state: RootState) => state?.auth);
+  // const [data, setdata] = useState<boolean>(a || false);
+
+  console.log('isLogged', data);
+  useEffect(() => {
+    if (data) {
+      Cookies.set('data', JSON.stringify(data));
+      router.push('/dashboard');
+    }
+  }, [data, router, message]);
+
   const handleSubmit = (values: IAuth) => {
-    console.log('values', values);
     dispatch({
-      type: 'user/login',
+      type: 'auth/login',
       payload: values,
     });
+    if (message !== '') {
+      console.log('message ', message);
+      CusNotification(message, 'error');
+    } else {
+      console.log('message ', message);
+
+      CusNotification(message);
+    }
   };
   return (
     <div className="bg-white max-w-6xl flex items-center justify-center mx-auto text-slate-900">
