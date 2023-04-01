@@ -40,4 +40,7 @@ module.exports = {
     lineCamp,
     // require('@tailwindcss/line-clamp'),
   ],
+  corePlugins: {
+    preflight: false, // <== disable this!
+  },
 };
