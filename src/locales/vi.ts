@@ -29,6 +29,7 @@ const vi: { [key: string]: string } = {
   shops: 'Cửa hàng',
   customers: 'Khách hàng',
   employees: 'Nhân viên',
+  addNew: 'Thêm mới',
   // menu
   features: 'Các tính năng chính',
   manageShops: 'Quản lý cửa hàng',

@@ -28,6 +28,7 @@ const en: { [key: string]: string } = {
   shops: 'Shops',
   customers: 'Customers',
   employees: 'Employees',
+  addNew: 'Add new',
   // menu
   features: 'Features',
   manageShops: 'Manage Shops',
