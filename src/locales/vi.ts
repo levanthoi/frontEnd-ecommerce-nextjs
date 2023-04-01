@@ -23,10 +23,22 @@ const vi: { [key: string]: string } = {
   emptyPassword: 'Password không được trống!',
   login: 'Đăng nhập',
 
-  // admin
+  // ==== admin ====
   revenues: 'Doanh thu',
   orders: 'Đặt hàng',
   shops: 'Cửa hàng',
   customers: 'Khách hàng',
+  employees: 'Nhân viên',
+  // menu
+  features: 'Các tính năng chính',
+  manageShops: 'Quản lý cửa hàng',
+  manageCustomers: 'Quản lý khách hàng',
+  manageEmployees: 'Quản lý nhân viên',
+  business: 'Doanh nghiệp',
+  dashboard: 'Bảng điều khiển',
+  categories: 'Danh mục',
+  brands: 'Nhãn hiệu',
+  products: 'Sản phẩm',
+  coupons: 'Phiếu mua hàng',
 };
 export default vi;

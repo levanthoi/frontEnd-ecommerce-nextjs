@@ -7,7 +7,7 @@ import * as icon from '@/icons';
 
 const Dashboard: React.FC = () => {
   return (
-    <AdminLayout title="Dashboard">
+    <AdminLayout>
       <CStatistic />
       <Card className="my-6">
         <Row justify="space-between" align="middle">

@@ -27,5 +27,17 @@ const en: { [key: string]: string } = {
   orders: 'Orders',
   shops: 'Shops',
   customers: 'Customers',
+  employees: 'Employees',
+  // menu
+  features: 'Features',
+  manageShops: 'Manage Shops',
+  manageCustomers: 'Manage Customers',
+  manageEmployees: 'Manage Employees',
+  business: 'Business',
+  dashboard: 'Dashboard',
+  categories: 'Categories',
+  brands: 'Brands',
+  products: 'Products',
+  coupons: 'Coupons',
 };
 export default en;

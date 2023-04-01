@@ -1,7 +1,8 @@
 import React from 'react';
+import AdminLayout from '@/layouts/admin/AdminLayout';
 
 const Orders = () => {
-  return <div>Orders</div>;
+  return <AdminLayout>Orders</AdminLayout>;
 };
 
 export default Orders;

@@ -1,7 +1,8 @@
 import React from 'react';
+import AdminLayout from '@/layouts/admin/AdminLayout';
 
 const Customers = () => {
-  return <div>Customers</div>;
+  return <AdminLayout>Customers</AdminLayout>;
 };
 
 export default Customers;
