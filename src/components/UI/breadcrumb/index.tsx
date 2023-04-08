@@ -13,12 +13,12 @@ const BreadCrumb = () => {
      */
     let paths: string[];
     const isRouteAdmin = router?.asPath?.startsWith('/admin');
+    paths = router.asPath.split('/');
     if (isRouteAdmin) {
-      paths = router.asPath.split('/admin/');
+      paths = paths?.slice(2);
     } else {
-      paths = router.asPath.split('/');
+      paths.shift();
     }
-    paths.shift();
     const pathsArray = paths?.map((path, i) => {
       return {
         breadcrumb: path,
@@ -35,7 +35,7 @@ const BreadCrumb = () => {
       <ul className="px-2 flex items-center" style={{ borderLeft: '4px solid purple' }}>
         {breadcrumbs?.map((breadcrumb, index) => (
           <li key={breadcrumb?.slug} className="flex items-center">
-            <span className="mb-1 text-2xl">{index === 0 ? '' : '>'}</span>
+            <span className="mb-1 text-lg mx-3">{index === 0 ? '' : '>'}</span>
             <Link href={breadcrumb.slug} className="capitalize">
               <span className="text-lg font-semibold">{breadcrumb.breadcrumb}</span>
             </Link>

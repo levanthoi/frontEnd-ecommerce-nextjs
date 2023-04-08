@@ -30,6 +30,10 @@ const vi: { [key: string]: string } = {
   customers: 'Khách hàng',
   employees: 'Nhân viên',
   addNew: 'Thêm mới',
+  create: 'Tạo',
+  edit: 'Chỉnh sửa',
+  order: 'Vị trí',
+  description: 'Mô tả',
   // menu
   features: 'Các tính năng chính',
   manageShops: 'Quản lý cửa hàng',
@@ -38,8 +42,19 @@ const vi: { [key: string]: string } = {
   business: 'Doanh nghiệp',
   dashboard: 'Bảng điều khiển',
   categories: 'Danh mục',
+  category: 'Danh mục',
   brands: 'Nhãn hiệu',
   products: 'Sản phẩm',
+  product: 'Sản phẩm',
+  blogs: 'Tin tức',
+  blog: 'Tin tức',
   coupons: 'Phiếu mua hàng',
+  // column category
+  image: 'Ảnh',
+  name: 'Tên',
+  module: 'Loại',
+  status: 'Trạng thái',
+  actions: 'Tác vụ',
+  url: 'Link URL',
 };
 export default vi;

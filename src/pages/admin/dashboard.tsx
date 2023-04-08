@@ -1,9 +1,11 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 import { Button, Card, Col, Row, Space, Typography } from 'antd';
-import AdminLayout from '@/layouts/admin/AdminLayout';
 import CStatistic from '@/components/admin/statistics';
 import AreaChart from '@/components/admin/chart/AreaChart';
 import * as icon from '@/icons';
+
+const AdminLayout = dynamic(() => import('@/layouts/admin/AdminLayout'));
 
 const Dashboard: React.FC = () => {
   return (

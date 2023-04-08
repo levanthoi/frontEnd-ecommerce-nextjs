@@ -4,7 +4,6 @@ import React from 'react';
 import { IconType } from 'react-icons';
 import * as icon from '@/icons';
 import { useLanguage } from '@/hooks/useLanguage';
-import ColIcon from '@/components/admin/UI/colIcon';
 
 interface Props {
   color: string;

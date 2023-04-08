@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useLanguage } from '@/hooks/useLanguage';
 import { IAuth } from '@/lib/types/auth';
 import { RootState } from '@/redux/reducers/rootReducer';
-import { CusNotification } from '@/components/UI/CusNotification';
+import { Notification } from '@/components/UI/Notification';
 
 const Login: React.FC = () => {
   const { t } = useLanguage();
@@ -17,11 +17,12 @@ const Login: React.FC = () => {
   const { data, message } = useSelector((state: RootState) => state?.auth);
   // const [data, setdata] = useState<boolean>(a || false);
 
-  console.log('isLogged', data);
+  // console.log('data', data);
   useEffect(() => {
+    console.log('data useEffect', data);
     if (data) {
       Cookies.set('data', JSON.stringify(data));
-      router.push('/dashboard');
+      router.push('/admin/dashboard');
     }
   }, [data, router, message]);
 
@@ -32,11 +33,11 @@ const Login: React.FC = () => {
     });
     if (message !== '') {
       console.log('message ', message);
-      CusNotification(message, 'error');
+      Notification(message, false);
     } else {
+      console.log('data handle', data);
       console.log('message ', message);
-
-      CusNotification(message);
+      Notification(message, true);
     }
   };
   return (

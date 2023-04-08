@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import Cookies from 'js-cookie';
 import { IAuth } from '@/lib/types/auth';
 import { IAuthRootState } from '@/lib/types/state';
 
 const initialState: IAuthRootState<IAuth> = {
   isLoading: false,
   isLogged: false,
-  data: null,
+  data: Cookies.get('data') ? JSON.parse(Cookies.get('data')!) : null,
   message: '',
 };
 
@@ -14,7 +15,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     loginSuccess(state: IAuthRootState<IAuth>, { payload }: PayloadAction<any>) {
-      //   console.log('action', action);
+      console.log('payload', payload);
       return { ...state, isLogged: true, data: payload.data, message: payload.message };
     },
     loginFailure(state: IAuthRootState<IAuth>, { payload }: PayloadAction<any>) {

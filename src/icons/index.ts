@@ -7,6 +7,11 @@ import {
   AiOutlineReload,
   AiOutlineAreaChart,
   AiOutlinePlus,
+  AiOutlineClose,
+  AiOutlineCheck,
+  AiOutlineEdit,
+  AiOutlineDelete,
+  AiOutlineUpload,
 } from 'react-icons/ai';
 import { BsFillCartCheckFill } from 'react-icons/bs';
 import { BiBell, BiReceipt, BiExport } from 'react-icons/bi';
@@ -30,6 +35,11 @@ export {
   AiOutlineReload,
   AiOutlineAreaChart,
   AiOutlinePlus,
+  AiOutlineCheck,
+  AiOutlineClose,
+  AiOutlineEdit,
+  AiOutlineDelete,
+  AiOutlineUpload,
   BiBell,
   BiExport,
   BiReceipt,

@@ -32,6 +32,16 @@ const itemMenu = [
         key: 'categories',
         label: 'categories',
         icon: <icon.VscSymbolMisc />,
+        // children: [
+        //   {
+        //     key: 'products',
+        //     label: 'products',
+        //   },
+        //   {
+        //     key: 'blogs',
+        //     label: 'blogs',
+        //   },
+        // ],
       },
       {
         key: 'brands',
@@ -102,6 +112,7 @@ const AdminLayout: React.FC<Props> = ({ children }) => {
   // const title = router.asPath?.split('/admin/')?.slice(1)[0];
   const path = router.asPath?.split('/admin/')?.slice(1)[0];
   const handleClickMenu: MenuProps['onClick'] = (e) => {
+    // console.log(e);
     if (path !== e.key) {
       router.push(`/admin/${e.key}`);
     }
@@ -115,6 +126,12 @@ const AdminLayout: React.FC<Props> = ({ children }) => {
         return {
           ...child,
           label: t[`${child.label}`],
+          // children: child?.children?.map((childTwo) => {
+          //   return {
+          //     ...childTwo,
+          //     label: t[`${childTwo.label}`],
+          //   };
+          // }),
         };
       }),
     };
@@ -133,6 +150,7 @@ const AdminLayout: React.FC<Props> = ({ children }) => {
           </div>
           <Menu
             onClick={handleClickMenu}
+            mode="inline"
             style={{ color: colorText }}
             defaultSelectedKeys={[`${path}`]}
             items={itemsMenu}

@@ -29,6 +29,10 @@ const en: { [key: string]: string } = {
   customers: 'Customers',
   employees: 'Employees',
   addNew: 'Add new',
+  create: 'Create',
+  edit: 'Edit',
+  order: 'Order',
+  description: 'Description',
   // menu
   features: 'Features',
   manageShops: 'Manage Shops',
@@ -37,8 +41,19 @@ const en: { [key: string]: string } = {
   business: 'Business',
   dashboard: 'Dashboard',
   categories: 'Categories',
+  category: 'Categories',
   brands: 'Brands',
   products: 'Products',
+  product: 'Products',
+  blogs: 'Blogs',
+  blog: 'Blogs',
   coupons: 'Coupons',
+  // column
+  image: 'Image',
+  name: 'Name',
+  module: 'Module',
+  status: 'Status',
+  actions: 'Actions',
+  url: 'SEO URL',
 };
 export default en;
