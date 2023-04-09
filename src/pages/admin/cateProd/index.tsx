@@ -3,8 +3,8 @@ import { AxiosResponse } from 'axios';
 import { GetStaticProps } from 'next';
 import dynamic from 'next/dynamic';
 import type { ColumnsType, TableProps } from 'antd/es/table';
-import { Button, Popconfirm, Row, Space, Switch, Table } from 'antd';
-import Link from 'next/link';
+import { Button, Popconfirm, Space, Switch, Table } from 'antd';
+// import Link from 'next/link';
 import { useRouter } from 'next/router';
 // import { useDispatch } from 'react-redux';
 import * as icon from '@/icons';
@@ -13,21 +13,59 @@ import { ICateProd } from '@/lib/types/admin/cateProd.type';
 import { deleteCateProd, getCateProd } from '@/services/cateProd.service';
 import { Notification } from '@/components/UI/Notification';
 
-const AdminLayout = dynamic(() => import('@/layouts/admin/AdminLayout'));
+const NavTab = dynamic(() => import('@/components/admin/navTab/NavTab'));
 
 interface Props {
   data: ICateProd[];
 }
 
 const Categories: React.FC<Props> = ({ data }) => {
-  console.log('data', data);
-
   const { t } = useLanguage();
   // const dispatch = useDispatch();
   const router = useRouter();
   const [dataCateProd, setDataCateProd] = React.useState<Array<ICateProd> | []>(data);
-  // const [row, setRow] = React.useState<ICateProd>();
+  // const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
+  // const refreshData = () => {
+  //   router.replace(router.asPath);
+  //   setIsLoading(true);
+  // };
+
+  function buildNestedStructure(
+    items: ICateProd[],
+    parent: ICateProd | undefined,
+  ): ICateProd[] | undefined {
+    const children = items.filter((item) => item.parent === parent?.key);
+    if (children.length === 0) {
+      return undefined;
+    }
+
+    const nestedChildren = children.map((child) => ({
+      ...child,
+      children: buildNestedStructure(items, child),
+    }));
+
+    return nestedChildren;
+  }
+
+  React.useEffect(() => {
+    const topLevelItems = dataCateProd.filter((item) => item.parent === 'root');
+    const nestedStructure = topLevelItems.map((item) => ({
+      ...item,
+      children: buildNestedStructure(dataCateProd, item),
+    }));
+
+    setDataCateProd(nestedStructure);
+  }, []);
+
+  // React.useEffect(() => {
+  //   setIsLoading(false);
+  // }, [data]);
+
+  /**
+   * @description  : Delete
+   * @param record
+   */
   const handleDelete = async (record: ICateProd) => {
     try {
       const res: AxiosResponse<any> = await deleteCateProd(record.key);
@@ -40,21 +78,28 @@ const Categories: React.FC<Props> = ({ data }) => {
       Notification(message, success);
     }
   };
+  /**
+   * @description  : Edit a Row Table
+   * @param record : ICateProd
+   */
   const handleEdit = async (record: ICateProd) => {
-    // setRow(record);
-    // dispatch({
-    //   type: 'table/edit',
-    //   payload: record,
-    // });
-    router.push(`/admin/categories/${record.key}`);
+    // console.log('router', router);
+    router.push(`${router.asPath}/${record.key}`);
   };
 
+  // const handleReset = () => {
+  //   refreshData();
+  // };
+
+  /**
+   * @description : Khởi tạo Column
+   */
   const columns: ColumnsType<ICateProd> = [
     {
       title: 'ID',
-      dataIndex: 'id',
-      width: '5%',
-      render: (text, _, index) => <p>{index + 1}</p>,
+      dataIndex: 'key',
+      width: '25%',
+      render: (text, _, index) => text,
     },
     {
       title: t.image,
@@ -67,8 +112,8 @@ const Categories: React.FC<Props> = ({ data }) => {
       width: '25%',
     },
     {
-      title: t.module,
-      dataIndex: 'module',
+      title: t.order,
+      dataIndex: 'order',
       width: '15%',
     },
     {
@@ -86,7 +131,7 @@ const Categories: React.FC<Props> = ({ data }) => {
     {
       title: t.actions,
       dataIndex: 'actions',
-      width: '20%',
+      width: '10%',
       render: (_, record) => (
         <Space wrap>
           <Button type="primary" icon={<icon.AiOutlineEdit />} onClick={() => handleEdit(record)} />
@@ -103,23 +148,10 @@ const Categories: React.FC<Props> = ({ data }) => {
   };
 
   return (
-    <AdminLayout>
-      <div className="bg-white p-6 rounded-md">
-        <Row justify="space-between">
-          <Space>
-            <Button className="text-purple-700 bg-purple-200" icon={<icon.TfiReload />} />
-            <Button className="text-green-700 bg-green-200" icon={<icon.AiOutlineShop />} />
-            <Button className="text-red-700 bg-red-200" icon={<icon.BiExport />}>
-              Export
-            </Button>
-          </Space>
-          <Button type="primary" icon={<icon.AiOutlinePlus />}>
-            <Link href="/admin/categories/create">{t.addNew}</Link>
-          </Button>
-        </Row>
-        <Table columns={columns} dataSource={dataCateProd} onChange={onChange} />
-      </div>
-    </AdminLayout>
+    <>
+      <NavTab />
+      <Table columns={columns} dataSource={dataCateProd} onChange={onChange} />
+    </>
   );
 };
 
@@ -127,7 +159,7 @@ export default Categories;
 
 export const getStaticProps: GetStaticProps = async () => {
   const query = {
-    fields: 'name,status, module,image,key',
+    fields: '',
   };
   const res: AxiosResponse<any> = await getCateProd(query);
   const { data } = res;

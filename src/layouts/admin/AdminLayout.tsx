@@ -24,24 +24,14 @@ const itemMenu = [
     icon: <icon.TbLayoutDashboard />,
   },
   {
-    key: 'features',
-    label: 'features',
+    key: 'manageProduct',
+    label: 'manageProduct',
     type: 'group',
     children: [
       {
-        key: 'categories',
+        key: 'cateProd',
         label: 'categories',
         icon: <icon.VscSymbolMisc />,
-        // children: [
-        //   {
-        //     key: 'products',
-        //     label: 'products',
-        //   },
-        //   {
-        //     key: 'blogs',
-        //     label: 'blogs',
-        //   },
-        // ],
       },
       {
         key: 'brands',
@@ -57,6 +47,24 @@ const itemMenu = [
         key: 'orders',
         label: 'orders',
         icon: <icon.BiReceipt />,
+      },
+    ],
+    icon: null,
+  },
+  {
+    key: 'manageBlog',
+    label: 'manageBlog',
+    type: 'group',
+    children: [
+      {
+        key: 'cateBlog',
+        label: 'categories',
+        icon: <icon.VscSymbolMisc />,
+      },
+      {
+        key: 'blogs',
+        label: 'blogs',
+        icon: <icon.BsNewspaper />,
       },
     ],
     icon: null,
@@ -112,7 +120,7 @@ const AdminLayout: React.FC<Props> = ({ children }) => {
   // const title = router.asPath?.split('/admin/')?.slice(1)[0];
   const path = router.asPath?.split('/admin/')?.slice(1)[0];
   const handleClickMenu: MenuProps['onClick'] = (e) => {
-    // console.log(e);
+    console.log(e);
     if (path !== e.key) {
       router.push(`/admin/${e.key}`);
     }
@@ -166,7 +174,7 @@ const AdminLayout: React.FC<Props> = ({ children }) => {
 
           <Content style={{ padding: '1.5rem' }}>
             <BreadCrumb />
-            {children}
+            <div className="bg-white p-6 rounded-md">{children}</div>
           </Content>
           <Footer>Footer</Footer>
         </Layout>

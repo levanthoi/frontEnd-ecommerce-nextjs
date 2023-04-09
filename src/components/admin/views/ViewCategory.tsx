@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -8,7 +8,7 @@ import {
   Upload,
   InputNumber,
   Typography,
-  Select,
+  // Select,
   TreeSelect,
 } from 'antd';
 import { useDispatch } from 'react-redux';
@@ -19,8 +19,9 @@ import { AxiosResponse } from 'axios';
 import { useLanguage } from '@/hooks/useLanguage';
 import { ICateProd } from '@/lib/types/admin/cateProd.type';
 import * as icon from '@/icons';
-import { getCateProd, updateCateProd } from '@/services/cateProd.service';
+import { createCateProd, updateCateProd } from '@/services/cateProd.service';
 import { Notification } from '@/components/UI/Notification';
+import { ItemCate, useGetCateProd } from '@/hooks/useGetCateProd';
 // import { RootState } from '@/redux/reducers/rootReducer';
 
 interface Props {
@@ -34,46 +35,29 @@ const ViewCategory: React.FC<Props> = ({ row }) => {
   const router = useRouter();
   const [form] = Form.useForm<ICateProd>();
   const { Item } = Form;
-  const [categories, setCategories] = useState<
-    Array<{ title: string; value: string; children?: Array<any> }> | []
-  >([
-    {
-      title: 'Root',
-      value: 'root',
-    },
-  ]);
+  const { categories }: { categories: ItemCate[] } = useGetCateProd();
+  console.log('cate', categories);
 
-  const [module, setModule] = useState<Array<{ label: string; value: string }> | []>([
-    {
-      label: t.product,
-      value: 'product',
-    },
-    {
-      label: t.blog,
-      value: 'blog',
-    },
-  ]);
+  // const [categories, setCategories] = useState<
+  //   Array<{ title: string; value: string; children?: Array<any> }> | []
+  // >([
+  //   {
+  //     title: 'Root',
+  //     value: 'root',
+  //   },
+  // ]);
+
+  // const [module, setModule] = useState<Array<{ label: string; value: string }> | []>([
+  //   {
+  //     label: t.product,
+  //     value: 'product',
+  //   },
+  //   {
+  //     label: t.blog,
+  //     value: 'blog',
+  //   },
+  // ]);
   const [status, setStatus] = useState<boolean>(true);
-
-  const fetch = useCallback(async () => {
-    const query = {
-      fields: '',
-    };
-    const res: AxiosResponse<any> = await getCateProd(query);
-    const newCate = res?.data?.data?.map((item: any) => {
-      return {
-        value: item.key,
-        title: item.name,
-      };
-    });
-    console.log('new', newCate);
-
-    if (newCate) setCategories((prev) => [...prev, ...newCate]);
-  }, []);
-
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
 
   useEffect(() => {
     console.log('row', row);
@@ -82,42 +66,25 @@ const ViewCategory: React.FC<Props> = ({ row }) => {
     else form.resetFields();
   }, [form, row]);
 
-  //   useEffect(() => {
-  //     console.log('cateProds', cateProds);
-
-  //     const newCate = cateProds?.map((item: any) => {
-  //       return {
-  //         ...item,
-  //         value: item._id,
-  //         title: item.name,
-  //       };
-  //     });
-  //     console.log('new', newCate);
-
-  //     if (newCate) setCategories((prev) => [...prev, ...newCate]);
-  //   }, [cateProds]);
-
   /**
    * @description : submit form
    * @param value : ICateProd
    */
   const handleSubmit = async (value: ICateProd) => {
     const addItem = { ...value, status, slug: '' };
+    let res: AxiosResponse<any>;
     try {
       if (row) {
         const arg = {
           id: row.key,
           payload: addItem,
         };
-        const res: AxiosResponse<any> = await updateCateProd(arg);
-        const { message, success } = res.data;
-        Notification(message, success);
+        res = await updateCateProd(arg);
       } else {
-        dispatch({
-          type: 'cateProd/add',
-          payload: addItem,
-        });
+        res = await createCateProd(addItem);
       }
+      const { message, success } = res.data;
+      Notification(message, success);
       router.back();
     } catch (e: any) {
       const { message, success } = e.data;
@@ -140,11 +107,14 @@ const ViewCategory: React.FC<Props> = ({ row }) => {
         layout="horizontal"
         labelCol={{ span: 4 }}
         autoComplete="off"
+        initialValues={{
+          parent: 'root',
+        }}
         onFinish={handleSubmit}
       >
-        <Item name="module" label={t.module}>
+        {/* <Item name="module" label={t.module}>
           <Select options={module} />
-        </Item>
+        </Item> */}
         <Item name="parent" label={t.category}>
           <TreeSelect showSearch treeData={categories} />
         </Item>

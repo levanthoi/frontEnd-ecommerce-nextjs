@@ -13,7 +13,7 @@ import {
   AiOutlineDelete,
   AiOutlineUpload,
 } from 'react-icons/ai';
-import { BsFillCartCheckFill } from 'react-icons/bs';
+import { BsFillCartCheckFill, BsNewspaper } from 'react-icons/bs';
 import { BiBell, BiReceipt, BiExport } from 'react-icons/bi';
 import { FiSettings, FiUsers } from 'react-icons/fi';
 import { GrUserManager } from 'react-icons/gr';
@@ -44,6 +44,7 @@ export {
   BiExport,
   BiReceipt,
   BsFillCartCheckFill,
+  BsNewspaper,
   FiUsers,
   FiSettings,
   GrUserManager,
