@@ -1,3 +1,4 @@
+import React from 'react';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
@@ -20,6 +21,7 @@ function App({ Component, pageProps }: AppProps) {
   let Layout = WebLayout;
   if (router.asPath?.includes('/admin')) {
     Layout = AdminLayout;
+    if (router.asPath?.includes('/admin/login')) Layout = React.Fragment;
   }
   return (
     <Provider store={store}>

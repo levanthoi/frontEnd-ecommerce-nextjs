@@ -174,7 +174,7 @@ const AdminLayout: React.FC<Props> = ({ children }) => {
 
           <Content style={{ padding: '1.5rem' }}>
             <BreadCrumb />
-            <div className="bg-white p-6 rounded-md">{children}</div>
+            {children}
           </Content>
           <Footer>Footer</Footer>
         </Layout>

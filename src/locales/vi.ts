@@ -59,5 +59,23 @@ const vi: { [key: string]: string } = {
   status: 'Trạng thái',
   actions: 'Tác vụ',
   url: 'Link URL',
+  // product
+  productName: 'Tên sản phẩm',
+  shop: 'Cửa hàng',
+  content: 'Nội dung',
+  generalInfo: 'Thông tin chung',
+  productType: 'Loại sản phẩm',
+  sku: 'Mã sản phẩm Sku',
+  unit: 'Đơn vị',
+  variations: 'Biến thể',
+  colors: 'Màu sắc',
+  discount: 'Giảm giá',
+  discountType: 'Loại giảm giá',
+  tags: 'Thẻ',
+  quantity: 'Số lượng',
+  totalQuantity: 'Tổng số lượng',
+  unitPrice: 'Đơn giá',
+  purchasePrice: 'Giá mua',
+  taxModel: 'Mô hình thuế',
 };
 export default vi;

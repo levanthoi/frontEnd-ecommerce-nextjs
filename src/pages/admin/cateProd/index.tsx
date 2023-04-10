@@ -148,10 +148,10 @@ const Categories: React.FC<Props> = ({ data }) => {
   };
 
   return (
-    <>
+    <div className="bg-white p-6 rounded-md">
       <NavTab />
       <Table columns={columns} dataSource={dataCateProd} onChange={onChange} />
-    </>
+    </div>
   );
 };
 
