@@ -1,4 +1,4 @@
-import { Card, Col, Row } from 'antd';
+import { Button, Card, Col, Row } from 'antd';
 import Link from 'next/link';
 import React from 'react';
 import { IconType } from 'react-icons';
@@ -29,9 +29,8 @@ const StatisticBox: React.FC<Props> = ({ color, bg, Icon, val, title }) => {
               </span>
             </Link>
           </Col>
-          <Col className={`rounded-md py-2 px-3 ${bg}`}>
-            <Icon size={30} className={color} />
-          </Col>
+          <Button className={`rounded-md ${color} ${bg}`} icon={<Icon />} size="large" />
+          {/* <ColIcon color={color} bg={bg} Icon={Icon} /> */}
         </Row>
       </Card>
     </Col>

@@ -24,12 +24,12 @@ const itemMenu = [
     icon: <icon.TbLayoutDashboard />,
   },
   {
-    key: 'features',
-    label: 'features',
+    key: 'manageProduct',
+    label: 'manageProduct',
     type: 'group',
     children: [
       {
-        key: 'categories',
+        key: 'cateProd',
         label: 'categories',
         icon: <icon.VscSymbolMisc />,
       },
@@ -47,6 +47,24 @@ const itemMenu = [
         key: 'orders',
         label: 'orders',
         icon: <icon.BiReceipt />,
+      },
+    ],
+    icon: null,
+  },
+  {
+    key: 'manageBlog',
+    label: 'manageBlog',
+    type: 'group',
+    children: [
+      {
+        key: 'cateBlog',
+        label: 'categories',
+        icon: <icon.VscSymbolMisc />,
+      },
+      {
+        key: 'blogs',
+        label: 'blogs',
+        icon: <icon.BsNewspaper />,
       },
     ],
     icon: null,
@@ -102,6 +120,7 @@ const AdminLayout: React.FC<Props> = ({ children }) => {
   // const title = router.asPath?.split('/admin/')?.slice(1)[0];
   const path = router.asPath?.split('/admin/')?.slice(1)[0];
   const handleClickMenu: MenuProps['onClick'] = (e) => {
+    console.log(e);
     if (path !== e.key) {
       router.push(`/admin/${e.key}`);
     }
@@ -115,6 +134,12 @@ const AdminLayout: React.FC<Props> = ({ children }) => {
         return {
           ...child,
           label: t[`${child.label}`],
+          // children: child?.children?.map((childTwo) => {
+          //   return {
+          //     ...childTwo,
+          //     label: t[`${childTwo.label}`],
+          //   };
+          // }),
         };
       }),
     };
@@ -133,6 +158,7 @@ const AdminLayout: React.FC<Props> = ({ children }) => {
           </div>
           <Menu
             onClick={handleClickMenu}
+            mode="inline"
             style={{ color: colorText }}
             defaultSelectedKeys={[`${path}`]}
             items={itemsMenu}
