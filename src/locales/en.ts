@@ -61,6 +61,9 @@ const en: { [key: string]: string } = {
   url: 'SEO URL',
   // product
   productName: 'Product Name',
+  productPrice: 'Product Price',
+  stock: 'Stock',
+  priceStock: 'Product Price & Stock',
   shop: 'Shop',
   content: 'Content',
   generalInfo: 'General Info',
@@ -68,6 +71,8 @@ const en: { [key: string]: string } = {
   sku: 'Product Code Sku',
   unit: 'Unit',
   variations: 'Variations',
+  attributes: 'Attributes',
+  nameAttributes: 'Attribute Name',
   colors: 'Colors',
   discount: 'Discount',
   discountType: 'Discount Type',
@@ -77,5 +82,13 @@ const en: { [key: string]: string } = {
   unitPrice: 'Unit Price',
   purchasePrice: 'Purchase Price',
   taxModel: 'Tax Model',
+  tax: 'Tax',
+  percent: 'Percent',
+  flat: 'Flat',
+  values: 'Values',
+  include: 'Include',
+  exclude: 'Exclude',
+  variant: 'Variant',
+  variantPrice: 'Variant Price',
 };
 export default en;

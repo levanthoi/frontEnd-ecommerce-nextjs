@@ -140,4 +140,8 @@ input {
   display: flex;
 }
 
+.ant-card {
+  margin: 8px 0;
+}
+
 /* @import '/src/styles/sourceediting.css'; */

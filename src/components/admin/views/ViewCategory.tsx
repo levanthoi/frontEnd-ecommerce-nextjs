@@ -11,7 +11,7 @@ import {
   // Select,
   TreeSelect,
 } from 'antd';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 // axios
 import { AxiosResponse } from 'axios';
@@ -31,32 +31,13 @@ interface Props {
 
 const ViewCategory: React.FC<Props> = ({ row }) => {
   const { t } = useLanguage();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const router = useRouter();
   const [form] = Form.useForm<ICateProd>();
   const { Item } = Form;
   const { categories }: { categories: ItemCate[] } = useGetCateProd();
   console.log('cate', categories);
 
-  // const [categories, setCategories] = useState<
-  //   Array<{ title: string; value: string; children?: Array<any> }> | []
-  // >([
-  //   {
-  //     title: 'Root',
-  //     value: 'root',
-  //   },
-  // ]);
-
-  // const [module, setModule] = useState<Array<{ label: string; value: string }> | []>([
-  //   {
-  //     label: t.product,
-  //     value: 'product',
-  //   },
-  //   {
-  //     label: t.blog,
-  //     value: 'blog',
-  //   },
-  // ]);
   const [status, setStatus] = useState<boolean>(true);
 
   useEffect(() => {
