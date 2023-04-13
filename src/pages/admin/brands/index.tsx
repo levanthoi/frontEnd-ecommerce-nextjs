@@ -3,8 +3,8 @@ import dynamic from 'next/dynamic';
 
 const AdminLayout = dynamic(() => import('@/layouts/admin/AdminLayout'));
 
-const Orders = () => {
-  return <AdminLayout>Orders</AdminLayout>;
+const Brands: React.FC = () => {
+  return <AdminLayout>Brands</AdminLayout>;
 };
 
-export default Orders;
+export default Brands;

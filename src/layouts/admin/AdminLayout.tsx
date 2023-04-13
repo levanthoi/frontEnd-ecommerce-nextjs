@@ -2,77 +2,167 @@ import React, { useState } from 'react';
 import { Layout, Menu, theme } from 'antd';
 import Head from 'next/head';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import type { MenuProps } from 'antd';
 import dynamic from 'next/dynamic';
 import * as icon from '@/icons';
 import BreadCrumb from '@/components/UI/breadcrumb';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const Header = dynamic(() => import('@/components/admin/header'));
 
 interface Props {
   children: React.ReactNode;
-  title: string;
 }
 
 const itemMenu = [
   {
-    key: '1',
+    key: 'dashboard',
+    label: 'dashboard',
+    type: '',
+    children: null,
     icon: <icon.TbLayoutDashboard />,
-    label: 'Dashboard',
   },
   {
-    key: '2',
-    icon: <icon.IoBagCheckOutline />,
-    label: 'Order',
+    key: 'manageProduct',
+    label: 'manageProduct',
+    type: 'group',
+    children: [
+      {
+        key: 'cateProd',
+        label: 'categories',
+        icon: <icon.VscSymbolMisc />,
+      },
+      {
+        key: 'brands',
+        label: 'brands',
+        icon: <icon.SiBrandfolder />,
+      },
+      {
+        key: 'products',
+        label: 'products',
+        icon: <icon.MdOutlineProductionQuantityLimits />,
+      },
+      {
+        key: 'orders',
+        label: 'orders',
+        icon: <icon.BiReceipt />,
+      },
+    ],
+    icon: null,
   },
   {
-    key: '3',
-    icon: <icon.MdOutlineProductionQuantityLimits />,
-    label: 'Product',
+    key: 'manageBlog',
+    label: 'manageBlog',
+    type: 'group',
+    children: [
+      {
+        key: 'cateBlog',
+        label: 'categories',
+        icon: <icon.VscSymbolMisc />,
+      },
+      {
+        key: 'blogs',
+        label: 'blogs',
+        icon: <icon.BsNewspaper />,
+      },
+    ],
+    icon: null,
   },
   {
-    key: '4',
-    icon: <icon.AiOutlineOrderedList />,
-    label: 'Categories',
+    key: 'manageCustomers',
+    label: 'manageCustomers',
+    type: 'group',
+    children: [
+      {
+        key: 'customers',
+        label: 'customers',
+        icon: <icon.FiUsers />,
+      },
+    ],
+    icon: null,
   },
   {
-    key: '5',
-    icon: <icon.SiBrandfolder />,
-    label: 'Brands',
+    key: 'manageEmployees',
+    label: 'manageEmployees',
+    type: 'group',
+    children: [
+      {
+        key: 'employees',
+        label: 'employees',
+        icon: <icon.GrUserManager />,
+      },
+    ],
+    icon: null,
   },
-  {
-    key: '6',
-    icon: <icon.FiUsers />,
-    label: 'Customer',
-  },
-  {
-    key: '10',
-    icon: <icon.FiSettings />,
-    label: 'Setting',
-  },
+  // {
+  //   key: '10',
+  //   label: 'setting',
+  //   type: '',
+  //   children: null,
+  //   icon: <icon.FiSettings />,
+  // },
 ];
 
-const AdminLayout: React.FC<Props> = ({ children, title }) => {
+const AdminLayout: React.FC<Props> = ({ children }) => {
   const { Footer, Sider, Content } = Layout;
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer, colorText },
   } = theme.useToken();
 
+  const router = useRouter();
+  const { t } = useLanguage();
+
   const handleClick = () => {
     setCollapsed(!collapsed);
   };
+  // const title = router.asPath?.split('/admin/')?.slice(1)[0];
+  const path = router.asPath?.split('/admin/')?.slice(1)[0];
+  const handleClickMenu: MenuProps['onClick'] = (e) => {
+    console.log(e);
+    if (path !== e.key) {
+      router.push(`/admin/${e.key}`);
+    }
+  };
+
+  const itemsMenu = itemMenu?.map((item) => {
+    return {
+      ...item,
+      label: t[`${item.label}`],
+      children: item?.children?.map((child) => {
+        return {
+          ...child,
+          label: t[`${child.label}`],
+          // children: child?.children?.map((childTwo) => {
+          //   return {
+          //     ...childTwo,
+          //     label: t[`${childTwo.label}`],
+          //   };
+          // }),
+        };
+      }),
+    };
+  });
+  // console.log('item', itemsMenu);
 
   return (
     <React.Fragment>
       <Head>
-        <title>{title}</title>
+        <title>{t[`${path}`]}</title>
       </Head>
       <Layout>
         <Sider theme="light" trigger={null} collapsible collapsed={collapsed}>
           <div className="w-full max-h-full">
             <Image width={100} height={30} src="/images/logo.png" alt="logo" />
           </div>
-          <Menu style={{ color: colorText }} defaultSelectedKeys={['1']} items={itemMenu} />
+          <Menu
+            onClick={handleClickMenu}
+            mode="inline"
+            style={{ color: colorText }}
+            defaultSelectedKeys={[`${path}`]}
+            items={itemsMenu}
+          />
         </Sider>
         <Layout style={{ color: 'black' }}>
           <Header

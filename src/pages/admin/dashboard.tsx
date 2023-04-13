@@ -1,13 +1,12 @@
 import React from 'react';
 import { Button, Card, Col, Row, Space, Typography } from 'antd';
-import AdminLayout from '@/layouts/admin/AdminLayout';
 import CStatistic from '@/components/admin/statistics';
 import AreaChart from '@/components/admin/chart/AreaChart';
 import * as icon from '@/icons';
 
 const Dashboard: React.FC = () => {
   return (
-    <AdminLayout title="Dashboard">
+    <>
       <CStatistic />
       <Card className="my-6">
         <Row justify="space-between" align="middle">
@@ -26,7 +25,7 @@ const Dashboard: React.FC = () => {
           <AreaChart />
         </div>
       </Card>
-    </AdminLayout>
+    </>
   );
 };
 

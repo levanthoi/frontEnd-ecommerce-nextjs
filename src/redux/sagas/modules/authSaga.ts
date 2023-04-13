@@ -9,8 +9,8 @@ function* login(action: PayloadAction<IAuth>) {
   try {
     console.log('action', action);
     const result: AxiosResponse<any> = yield call(loginAccount, action.payload);
-    console.log(result);
-    if (result) yield put(loginSuccess(result.data));
+    console.log('result', result);
+    yield put(loginSuccess(result.data));
   } catch (e: any) {
     yield put(loginFailure(e.response.data));
     console.log('error', e);

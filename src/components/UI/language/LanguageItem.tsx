@@ -11,7 +11,7 @@ interface Props {
 const LanguageItem: React.FC<Props> = ({ language, onClose }) => {
   const { t, locale } = useLanguage();
   const router = useRouter();
-  console.log('router', router);
+  // console.log('router', router);
 
   return (
     <Link href={`${router.asPath}`} locale={language}>

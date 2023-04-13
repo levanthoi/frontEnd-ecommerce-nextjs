@@ -47,6 +47,7 @@ You can visit Demo: <a href="https://ecommerce-nextjs-neon.vercel.app/">E-commer
 <!-- - Fully responsive -->
 
 - Multi-language (VI-EN)
+- Data Structure & Algorithm: Nested Structure
 <!-- - Multi-theme (Dark/Light) -->
 
 ## 📃Pages
