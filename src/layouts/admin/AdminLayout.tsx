@@ -39,6 +39,11 @@ const itemMenu = [
         icon: <icon.SiBrandfolder />,
       },
       {
+        key: 'attributes',
+        label: 'attributes',
+        icon: <icon.MdAttribution />,
+      },
+      {
         key: 'products',
         label: 'products',
         icon: <icon.MdOutlineProductionQuantityLimits />,
@@ -154,7 +159,8 @@ const AdminLayout: React.FC<Props> = ({ children }) => {
       <Layout>
         <Sider theme="light" trigger={null} collapsible collapsed={collapsed}>
           <div className="w-full max-h-full">
-            <Image width={100} height={30} src="/images/logo.png" alt="logo" />
+            LOGO.
+            {/* <Image width={100} height={30} src="/images/logo.png" alt="logo" /> */}
           </div>
           <Menu
             onClick={handleClickMenu}

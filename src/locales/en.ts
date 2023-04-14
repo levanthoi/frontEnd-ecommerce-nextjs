@@ -72,7 +72,7 @@ const en: { [key: string]: string } = {
   unit: 'Unit',
   variations: 'Variations',
   attributes: 'Attributes',
-  nameAttributes: 'Attribute Name',
+  attributeName: 'Attribute Name',
   colors: 'Colors',
   discount: 'Discount',
   discountType: 'Discount Type',
@@ -90,5 +90,6 @@ const en: { [key: string]: string } = {
   exclude: 'Exclude',
   variant: 'Variant',
   variantPrice: 'Variant Price',
+  brandName: 'Brand Name',
 };
 export default en;

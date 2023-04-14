@@ -72,7 +72,7 @@ const vi: { [key: string]: string } = {
   unit: 'Đơn vị',
   variations: 'Biến thể',
   attributes: 'Thuộc tính',
-  nameAttributes: 'Tên thuộc tính',
+  attributeName: 'Tên thuộc tính',
   colors: 'Màu sắc',
   discount: 'Giảm giá',
   discountType: 'Loại giảm giá',
@@ -90,5 +90,6 @@ const vi: { [key: string]: string } = {
   exclude: 'Không bao gồm Thuế',
   variant: 'Thuộc tính',
   variantPrice: 'Giá',
+  brandName: 'Tên nhãn hiệu',
 };
 export default vi;
