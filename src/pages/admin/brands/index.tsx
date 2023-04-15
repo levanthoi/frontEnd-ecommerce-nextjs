@@ -16,7 +16,9 @@ import { IBrand } from '@/lib/types/admin/brands/brand.type';
 import { deleteBrand, getBrand } from '@/services/brand.service';
 import { Notification } from '@/components/UI/Notification';
 
-const NavTab = dynamic(() => import('@/components/admin/navTab/NavTab'));
+const NavTab = dynamic(() => import('@/components/admin/navTab/NavTab'), {
+  ssr: false,
+});
 
 interface Props {
   data: IBrand[];

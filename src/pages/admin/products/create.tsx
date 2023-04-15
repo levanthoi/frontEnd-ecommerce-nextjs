@@ -1,8 +1,13 @@
 import React from 'react';
-import type { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
+import type { NextPage } from 'next';
+
 import { useLanguage } from '@/hooks/useLanguage';
-import ViewProduct from '@/components/admin/views/ViewProduct';
+
+const ViewProduct = dynamic(() => import('@/components/admin/views/ViewProduct'), {
+  ssr: false,
+});
 
 const Create: NextPage = () => {
   const { t } = useLanguage();

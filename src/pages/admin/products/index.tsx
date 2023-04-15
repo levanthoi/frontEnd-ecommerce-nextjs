@@ -11,7 +11,9 @@ import * as icon from '@/icons';
 import { IProduct } from '@/lib/types/products';
 import { useLanguage } from '@/hooks/useLanguage';
 
-const NavTab = dynamic(() => import('@/components/admin/navTab/NavTab'));
+const NavTab = dynamic(() => import('@/components/admin/navTab/NavTab'), {
+  ssr: false,
+});
 
 const Products: NextPage = () => {
   const { t } = useLanguage();

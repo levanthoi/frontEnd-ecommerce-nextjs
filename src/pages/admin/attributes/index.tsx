@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 
 // antd
 import type { ColumnsType, TableProps } from 'antd/es/table';
-import { Button, Image, Popconfirm, Space, Switch, Table } from 'antd';
+import { Button, Popconfirm, Space, Switch, Table, Tag } from 'antd';
 // icon
 import * as icon from '@/icons';
 // other
@@ -16,7 +16,9 @@ import { deleteAttribute, getAttribute } from '@/services/attribute.service';
 import { Notification } from '@/components/UI/Notification';
 import { IAttribute } from '@/lib/types/admin/attributes/attribute.type';
 
-const NavTab = dynamic(() => import('@/components/admin/navTab/NavTab'));
+const NavTab = dynamic(() => import('@/components/admin/navTab/NavTab'), {
+  ssr: false,
+});
 
 interface Props {
   data: IAttribute[];
@@ -63,6 +65,17 @@ const Attributes: NextPage<Props> = ({ data }) => {
     {
       title: t.name,
       dataIndex: 'title',
+      // width: '25%',
+    },
+    {
+      title: t.values,
+      dataIndex: 'variants',
+      render: (text) =>
+        text?.map((item: any) => (
+          <Space key={item?.name} wrap>
+            <Tag color="purple">{item?.name}</Tag>
+          </Space>
+        )),
       // width: '25%',
     },
     {

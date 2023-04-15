@@ -1,12 +1,16 @@
 import React from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import { AxiosResponse } from 'axios';
 import { useLanguage } from '@/hooks/useLanguage';
 import { getCateProd, getoneCateProd } from '@/services/cateProd.service';
-import ViewCategory from '@/components/admin/views/ViewCategory';
 import { ICateProd } from '@/lib/types/admin/cateProd.type';
+
+const ViewCategory = dynamic(() => import('@/components/admin/views/ViewCategory'), {
+  ssr: false,
+});
 
 const Edit: NextPage<{ row: ICateProd }> = ({ row }) => {
   const { t } = useLanguage();

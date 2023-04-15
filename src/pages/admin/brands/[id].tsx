@@ -1,12 +1,18 @@
 import React from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 import { GetStaticProps, GetStaticPaths } from 'next';
+
 import { AxiosResponse } from 'axios';
+
 import { useLanguage } from '@/hooks/useLanguage';
 import { IBrand } from '@/lib/types/admin/brands/brand.type';
 import { getBrand, getoneBrand } from '@/services/brand.service';
-import ViewBrand from '@/components/admin/views/ViewBrand';
+
+const ViewBrand = dynamic(() => import('@/components/admin/views/ViewBrand'), {
+  ssr: false,
+});
 
 const Edit: NextPage<{ row: IBrand }> = ({ row }) => {
   const { t } = useLanguage();

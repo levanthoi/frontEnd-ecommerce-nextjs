@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Form, Input, Switch, Upload } from 'antd';
-import { RcFile } from 'antd/es/upload';
+import { Button, Card, Col, Form, Input, Row, Space, Switch } from 'antd';
 // import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 // axios
@@ -11,7 +10,6 @@ import * as icon from '@/icons';
 import { createAttribute, updateAttribute } from '@/services/attribute.service';
 import { Notification } from '@/components/UI/Notification';
 import { IAttribute } from '@/lib/types/admin/attributes/attribute.type';
-import { getBase64 } from '@/utils/helpers';
 
 // import MyCKEditor from '../CKEditor';
 // import { RootState } from '@/redux/reducers/rootReducer';
@@ -27,9 +25,10 @@ const ViewAttribute: React.FC<Props> = ({ row }) => {
   const { t } = useLanguage();
   const router = useRouter();
   const [form] = Form.useForm<IAttribute>();
-  const { Item } = Form;
+  const { Item, List } = Form;
 
   const [status, setStatus] = useState<boolean>(true);
+  // const [variants, setVariants] = useState<Array<object>>([]);
   const [image, setImage] = useState<string>('');
   // const [fileList, setFileList] = useState<UploadFile[]>([]);
   // const [editorLoaded, setEditorLoaded] = useState<boolean>(false);
@@ -73,24 +72,6 @@ const ViewAttribute: React.FC<Props> = ({ row }) => {
     }
   };
 
-  // const titleCard = (params: string) => {
-  //   return (
-  //     <Space>
-  //       {t[params]}
-  //       <Switch />
-  //     </Space>
-  //   );
-  // };
-
-  const uploadButton = (
-    <div>
-      <icon.AiOutlinePlus />
-      <div style={{ marginTop: 8 }}>Upload</div>
-    </div>
-  );
-
-  const initialValues = {};
-
   return (
     <Form
       form={form}
@@ -98,31 +79,67 @@ const ViewAttribute: React.FC<Props> = ({ row }) => {
       layout="vertical"
       labelCol={{ span: 12 }}
       autoComplete="off"
-      initialValues={initialValues}
+      // initialValues={initialValues}
       onFinish={handleSubmit}
     >
-      {/* <Space direction="vertical"> */}
-      <Card
-        title={row ? t.edit : t.addNew}
-        extra={
-          <div>
-            <Switch checked={status} onChange={(checked: boolean) => setStatus(checked)} />
-            &nbsp; Active
-          </div>
-        }
-      >
-        <Item name="title" label={t.attributeName}>
-          <Input />
-        </Item>
-        <Item name="description" label={t.description}>
-          <Input />
-          {/* <MyEditor
+      <Row gutter={16}>
+        <Col span={12}>
+          <Card
+            title={row ? t.edit : t.addNew}
+            extra={
+              <div>
+                <Switch checked={status} onChange={(checked: boolean) => setStatus(checked)} />
+                &nbsp; Active
+              </div>
+            }
+          >
+            <Item name="title" label={t.attributeName}>
+              <Input />
+            </Item>
+            <Item name="description" label={t.description}>
+              <Input />
+              {/* <MyEditor
               onChange={(value: string) => setDesc(value)}
               value={desc}
               editorLoaded
             /> */}
-        </Item>
-      </Card>
+            </Item>
+          </Card>
+        </Col>
+        <Col span={12}>
+          <Card>
+            <List name="variants">
+              {(fields, { add, remove }) => (
+                <>
+                  {fields?.map(({ key, name, ...restField }) => {
+                    return (
+                      <Row gutter={16} key={key}>
+                        <Space>
+                          <Item {...restField} name={[name, 'name']} label={t.name}>
+                            <Input />
+                          </Item>
+                          <Item>
+                            <icon.AiOutlineClose
+                              onClick={() => remove(name)}
+                              className="mt-8 cursor-pointer"
+                            />
+                          </Item>
+                        </Space>
+                      </Row>
+                    );
+                  })}
+                  <Item>
+                    <Button type="dashed" onClick={() => add()} block icon={<icon.AiOutlinePlus />}>
+                      Add sights
+                    </Button>
+                  </Item>
+                </>
+              )}
+            </List>
+          </Card>
+        </Col>
+      </Row>
+
       <Item>
         <Button type="primary" htmlType="submit">
           Save

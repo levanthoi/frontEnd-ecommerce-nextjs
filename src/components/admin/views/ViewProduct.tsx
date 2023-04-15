@@ -30,6 +30,9 @@ import * as icon from '@/icons';
 import { createCateProd, updateCateProd } from '@/services/cateProd.service';
 import { Notification } from '@/components/UI/Notification';
 import { ItemCate, useGetCateProd } from '@/hooks/useGetCateProd';
+import { IBrand } from '@/lib/types/admin/brands/brand.type';
+import { useGetBrands } from '@/hooks/useGetBrands';
+import { useGetAttributes } from '@/hooks/useGetAttributes';
 // import MyCKEditor from '../CKEditor';
 // import { RootState } from '@/redux/reducers/rootReducer';
 
@@ -55,9 +58,13 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
   const { categories }: { categories: ItemCate[] } = useGetCateProd();
 
   const [status, setStatus] = useState<boolean>(true);
+  // const [brands, setBrands] = useState<IBrand[] | []>([])
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   // const [editorLoaded, setEditorLoaded] = useState<boolean>(false);
   // const [desc, setDesc] = useState<string>('');
+
+  const { brands } = useGetBrands();
+  const { attributes } = useGetAttributes();
 
   useEffect(() => {
     console.log('row', row);
@@ -147,10 +154,14 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
       value: 'digital',
     },
   ];
-  const brands = [
+  const units = [
     {
-      title: 'brand v1',
-      value: 'brandv1',
+      title: 'Cái',
+      value: 'cai',
+    },
+    {
+      title: 'Hộp',
+      value: 'hop',
     },
   ];
   const discountAfter = (
@@ -168,7 +179,9 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
   const initialValues = {
     shop: 'bigc',
     productType: 'physical',
-    category: categories[0].value,
+    category: categories[0]?.value || '',
+    brands: brands[0]?.title || '',
+    unit: units[0]?.title || '',
   };
 
   return (
@@ -231,7 +244,7 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
           </Col>
           <Col className="gutter-row" span={8}>
             <Item name="unit" label={t.unit}>
-              <Select options={productType} />
+              <Select options={units} />
             </Item>
           </Col>
         </Row>
@@ -240,7 +253,7 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
       <Row gutter={16}>
         <Col span={12}>
           <Card title={titleCard('attributes')}>
-            <List name="attributes">
+            <List name="variants">
               {(fields, { add, remove }) => (
                 <>
                   <Row gutter={16}>
@@ -254,8 +267,8 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
                   {fields?.map(({ key, name, ...restField }) => (
                     <Row gutter={16} key={key}>
                       <Col span={11}>
-                        <Item {...restField} name="varient">
-                          <Select options={brands} />
+                        <Item {...restField} name="variant">
+                          <Select options={attributes} />
                         </Item>
                       </Col>
                       <Col span={11}>

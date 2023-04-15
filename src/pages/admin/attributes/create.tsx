@@ -1,8 +1,12 @@
 import React from 'react';
 import type { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useLanguage } from '@/hooks/useLanguage';
-import ViewAttribute from '@/components/admin/views/ViewAttribute';
+
+const ViewAttribute = dynamic(() => import('@/components/admin/views/ViewAttribute'), {
+  ssr: false,
+});
 
 const Create: NextPage = () => {
   const { t } = useLanguage();

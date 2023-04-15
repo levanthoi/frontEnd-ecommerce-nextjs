@@ -13,7 +13,9 @@ import { ICateProd } from '@/lib/types/admin/cateProd.type';
 import { deleteCateProd, getCateProd } from '@/services/cateProd.service';
 import { Notification } from '@/components/UI/Notification';
 
-const NavTab = dynamic(() => import('@/components/admin/navTab/NavTab'));
+const NavTab = dynamic(() => import('@/components/admin/navTab/NavTab'), {
+  ssr: false,
+});
 
 interface Props {
   data: ICateProd[];
