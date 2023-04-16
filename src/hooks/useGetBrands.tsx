@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getBrand } from '@/services/brand.service';
+import { getActiveBrand } from '@/services/brand.service';
 import { IBrand } from '@/lib/types/admin/brands/brand.type';
 
 export const useGetBrands = () => {
@@ -11,8 +11,15 @@ export const useGetBrands = () => {
       const query = {
         fields: '',
       };
-      const res = await getBrand(query);
-      if (res) setBrands(res.data.data);
+      const res = await getActiveBrand(query);
+      const data = res?.data?.data;
+      const selectMapping = data?.map((item: IBrand) => {
+        return {
+          label: item?.title,
+          value: item?.key,
+        };
+      });
+      setBrands(selectMapping);
       setLoading(false);
     };
 

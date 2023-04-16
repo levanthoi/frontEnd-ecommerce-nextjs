@@ -13,6 +13,10 @@ export async function getBrand(params: any) {
   const { fields } = params;
   return http.get(`/v1/brand/getlist/?fields=${fields}`);
 }
+export async function getActiveBrand(params: any) {
+  const { fields } = params;
+  return http.get(`/v1/brand/getActive/?fields=${fields}`);
+}
 export async function getoneBrand(params: any) {
   const { id } = params;
   return http.get(`/v1/brand/getone/${id}`);

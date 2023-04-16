@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getAttribute } from '@/services/attribute.service';
+import { getActiveAttribute } from '@/services/attribute.service';
 import { IAttribute } from '@/lib/types/admin/attributes/attribute.type';
 
 export const useGetAttributes = () => {
@@ -8,12 +8,17 @@ export const useGetAttributes = () => {
 
   useEffect(() => {
     const fetchAttributes = async () => {
-      const query = {
-        fields: '',
-      };
-      const res = await getAttribute(query);
-      if (res) setAttributes(res.data.data);
-      setLoading(false);
+      try {
+        const query = {
+          fields: '',
+        };
+        const res = await getActiveAttribute(query);
+        const data: IAttribute[] = res?.data?.data;
+        setAttributes(data);
+        setLoading(false);
+      } catch (e: any) {
+        console.log(e);
+      }
     };
 
     fetchAttributes();

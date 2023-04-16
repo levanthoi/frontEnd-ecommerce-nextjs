@@ -9,6 +9,10 @@ export async function getAttribute(params: any) {
   const { fields } = params;
   return http.get(`/v1/attribute/getlist/?fields=${fields}`);
 }
+export async function getActiveAttribute(params: any) {
+  const { fields } = params;
+  return http.get(`/v1/attribute/getActive/?fields=${fields}`);
+}
 export async function getoneAttribute(params: any) {
   const { id } = params;
   return http.get(`/v1/attribute/getone/${id}`);

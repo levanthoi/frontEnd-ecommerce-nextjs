@@ -164,7 +164,7 @@ const AdminLayout: React.FC<Props> = ({ children }) => {
         <Sider theme="light" trigger={null} collapsible collapsed={collapsed}>
           <div className="w-full max-h-full">
             {/* LOGO. */}
-            <Image width={100} height={30} src="/images/logo.png" alt="logo" />
+            <Image width={100} height={30} src="/images/logo.png" alt="logo" priority />
           </div>
           <Menu
             onClick={handleClickMenu}
