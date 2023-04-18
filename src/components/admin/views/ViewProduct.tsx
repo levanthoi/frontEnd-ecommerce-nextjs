@@ -33,6 +33,8 @@ import { useGetCateProd } from '@/hooks/useGetCateProd';
 import { useGetBrands } from '@/hooks/useGetBrands';
 import { useGetAttributes } from '@/hooks/useGetAttributes';
 import { IAttribute } from '@/lib/types/admin/attributes/attribute.type';
+import { cartesianProduct, formatNumber } from '@/utils/helpers';
+
 // import MyCKEditor from '../CKEditor';
 // import { RootState } from '@/redux/reducers/rootReducer';
 
@@ -87,7 +89,7 @@ const after = [
 ];
 
 const ViewProduct: React.FC<Props> = ({ row }) => {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
   const router = useRouter();
   const [form] = Form.useForm<ICateProd>();
   const { Item, List } = Form;
@@ -131,23 +133,35 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
   };
 
   const handleValAttr = (val: string[]) => {
-    console.log('value', val);
-    console.log('form', form.getFieldValue('variants'));
+    // console.log('value', val);
+    // console.log('form', form.getFieldValue('variants'));
     const unitPrice = form.getFieldValue('unitPrice');
     const variants = form.getFieldValue('variants');
-    const arr: any[] = [];
-    variants?.forEach(({ value }: { value: string[] }) => {
-      value?.forEach((item: string) => {
-        const x: IVariant = {
-          variant: item,
-          variantPrice: unitPrice,
-          sku: item,
-          stock: 1,
-        };
-        arr.push(x);
-      });
-    });
-    console.log('arrrrrr', arr);
+    const valVariants = variants?.map((variant: any) => variant.value);
+    const cartesians = cartesianProduct(valVariants);
+    const combinations = cartesians?.map((item: any) => ({
+      variant: item?.join('-'),
+      variantPrice: unitPrice,
+      sku: `-${item?.join('-')}`,
+      stock: 1,
+    }));
+    setDataSource(combinations);
+  };
+
+  const handleChangeUnitPrice = () => {
+    const unitPrice = form.getFieldValue('unitPrice');
+    console.log('val', unitPrice);
+    const update = dataSource?.map((item) => ({ ...item, variantPrice: unitPrice }));
+    setDataSource(update);
+    console.log('dataSource', dataSource);
+  };
+
+  const handleChangePrice = (e: React.ChangeEvent<HTMLInputElement>, record: IVariant) => {
+    const update: IVariant[] = dataSource?.map((item: IVariant) =>
+      item?.sku === record?.sku ? { ...item, variantPrice: Number(e.target.value) } : item,
+    );
+    // console.log('update', update);
+    setDataSource(update);
   };
 
   /**
@@ -196,17 +210,19 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
     {
       title: t.variantPrice,
       dataIndex: 'variantPrice',
-      render: () => <Input />,
+      render: (text, record) => (
+        <Input value={text} onChange={(e) => handleChangePrice(e, record)} />
+      ),
     },
     {
       title: t.sku,
       dataIndex: 'sku',
-      render: () => <Input />,
+      render: (text) => <Input value={text} />,
     },
     {
       title: t.stock,
       dataIndex: 'stock',
-      render: () => <Input />,
+      render: (text) => <Input value={text} />,
     },
   ];
 
@@ -409,7 +425,7 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
             <Row gutter={16}>
               <Col span={6}>
                 <Item name="unitPrice" label={t.unitPrice}>
-                  <Input />
+                  <InputNumber onChange={handleChangeUnitPrice} style={{ width: '100%' }} />
                 </Item>
               </Col>
               <Col span={6}>
@@ -430,7 +446,7 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
             </Row>
             <Row>
               <Col span={24}>
-                <Table columns={columns} />
+                <Table columns={columns} dataSource={dataSource} rowKey="sku" />
               </Col>
             </Row>
           </Card>
