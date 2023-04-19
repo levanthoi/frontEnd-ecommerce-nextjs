@@ -33,6 +33,11 @@ const itemMenu = [
     type: 'group',
     children: [
       {
+        key: 'shops',
+        label: 'shops',
+        icon: <icon.AiOutlineShop />,
+      },
+      {
         key: 'cateProd',
         label: 'categories',
         icon: <icon.VscSymbolMisc />,
