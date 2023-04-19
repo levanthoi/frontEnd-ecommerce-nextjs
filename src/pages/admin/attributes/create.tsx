@@ -1,11 +1,10 @@
 import React from 'react';
+import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
-import type { NextPage } from 'next';
-
 import { useLanguage } from '@/hooks/useLanguage';
 
-const ViewProduct = dynamic(() => import('@/components/admin/views/ViewProduct'), {
+const ViewAttribute = dynamic(() => import('@/components/admin/views/ViewAttribute'), {
   ssr: false,
 });
 
@@ -15,9 +14,9 @@ const Create: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{`${t.create} ${t.products}`}</title>
+        <title>{`${t.create} ${t.attributes}`}</title>
       </Head>
-      <ViewProduct row={null} />
+      <ViewAttribute row={null} />
     </>
   );
 };

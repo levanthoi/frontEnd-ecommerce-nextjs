@@ -1,3 +1,5 @@
+import type { RcFile } from 'antd/es/upload/interface';
+
 export const formatNumber = (locale: string, number: number) => {
   let format;
   if (locale) {
@@ -13,3 +15,12 @@ export const formatNumber = (locale: string, number: number) => {
   }
   return format;
 };
+
+export function getBase64(file: RcFile) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
+}

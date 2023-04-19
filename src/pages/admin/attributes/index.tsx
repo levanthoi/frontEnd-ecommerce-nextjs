@@ -7,36 +7,36 @@ import { useRouter } from 'next/router';
 
 // antd
 import type { ColumnsType, TableProps } from 'antd/es/table';
-import { Button, Image, Popconfirm, Space, Switch, Table } from 'antd';
+import { Button, Popconfirm, Space, Switch, Table, Tag } from 'antd';
 // icon
 import * as icon from '@/icons';
 // other
 import { useLanguage } from '@/hooks/useLanguage';
-import { IBrand } from '@/lib/types/admin/brands/brand.type';
-import { deleteBrand, getBrand } from '@/services/brand.service';
+import { deleteAttribute, getAttribute } from '@/services/attribute.service';
 import { Notification } from '@/components/UI/Notification';
+import { IAttribute } from '@/lib/types/admin/attributes/attribute.type';
 
 const NavTab = dynamic(() => import('@/components/admin/navTab/NavTab'), {
   ssr: false,
 });
 
 interface Props {
-  data: IBrand[];
+  data: IAttribute[];
 }
 
-const Brands: NextPage<Props> = ({ data }) => {
+const Attributes: NextPage<Props> = ({ data }) => {
   const { t } = useLanguage();
   const router = useRouter();
 
-  const [dataBrand, setDataBrand] = useState<Array<IBrand> | []>(data || []);
+  const [dataAttribute, setDataAttribute] = useState<Array<IAttribute> | []>(data || []);
 
-  const handleDelete = async (record: IBrand) => {
+  const handleDelete = async (record: IAttribute) => {
     console.log('record', record);
     try {
-      const res: AxiosResponse<any> = await deleteBrand(record.key);
+      const res: AxiosResponse<any> = await deleteAttribute(record.key);
       const { message, success } = res.data;
-      const afterDelete = dataBrand?.filter((brand) => brand.key !== record.key);
-      setDataBrand(afterDelete);
+      const afterDelete = dataAttribute?.filter((attribute) => attribute.key !== record.key);
+      setDataAttribute(afterDelete);
       Notification(message, success);
     } catch (e: any) {
       const { message, success } = e.data;
@@ -45,9 +45,9 @@ const Brands: NextPage<Props> = ({ data }) => {
   };
   /**
    * @description  : Edit a Row Table
-   * @param record : IBrand
+   * @param record : IAttribute
    */
-  const handleEdit = async (record: IBrand) => {
+  const handleEdit = async (record: IAttribute) => {
     // console.log('record', record);
     router.push(`${router.asPath}/${record.key}`);
   };
@@ -55,7 +55,7 @@ const Brands: NextPage<Props> = ({ data }) => {
   /**
    * @description : Khởi tạo Column
    */
-  const columns: ColumnsType<IBrand> = [
+  const columns: ColumnsType<IAttribute> = [
     {
       title: 'ID',
       dataIndex: '',
@@ -63,14 +63,19 @@ const Brands: NextPage<Props> = ({ data }) => {
       render: (text, _, index) => index + 1,
     },
     {
-      title: t.image,
-      dataIndex: 'image',
-      render: (text, record) => <Image src={text} alt={record.title} width={150} height={100} />,
-      // width: '15%',
-    },
-    {
       title: t.name,
       dataIndex: 'title',
+      // width: '25%',
+    },
+    {
+      title: t.values,
+      dataIndex: 'variants',
+      render: (text) =>
+        text?.map((item: any) => (
+          <Space key={item?.name} wrap>
+            <Tag color="purple">{item?.name}</Tag>
+          </Space>
+        )),
       // width: '25%',
     },
     {
@@ -100,25 +105,25 @@ const Brands: NextPage<Props> = ({ data }) => {
     },
   ];
 
-  const onChange: TableProps<IBrand>['onChange'] = (pagination, filters, sorter, extra) => {
+  const onChange: TableProps<IAttribute>['onChange'] = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
   };
 
   return (
     <>
       <NavTab />
-      <Table columns={columns} dataSource={dataBrand} onChange={onChange} />
+      <Table columns={columns} dataSource={dataAttribute} onChange={onChange} />
     </>
   );
 };
 
-export default Brands;
+export default Attributes;
 
 export const getStaticProps: GetStaticProps = async () => {
   const query = {
     fields: '',
   };
-  const res: AxiosResponse<any> = await getBrand(query);
+  const res: AxiosResponse<any> = await getAttribute(query);
   const { data } = res;
   return {
     props: { data: data.data }, // will be passed to the page component as props

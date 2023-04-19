@@ -1,8 +1,15 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
+
 import { Button, Card, Col, Row, Space, Typography } from 'antd';
-import CStatistic from '@/components/admin/statistics';
-import AreaChart from '@/components/admin/chart/AreaChart';
 import * as icon from '@/icons';
+
+const CStatistic = dynamic(() => import('@/components/admin/statistics'), {
+  ssr: false,
+});
+const AreaChart = dynamic(() => import('@/components/admin/chart/AreaChart'), {
+  ssr: false,
+});
 
 const Dashboard: React.FC = () => {
   return (

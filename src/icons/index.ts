@@ -19,7 +19,7 @@ import { FiSettings, FiUsers } from 'react-icons/fi';
 import { GrUserManager } from 'react-icons/gr';
 import { HiUserGroup } from 'react-icons/hi';
 import { IoBagCheckOutline } from 'react-icons/io5';
-import { MdOutlineProductionQuantityLimits } from 'react-icons/md';
+import { MdOutlineProductionQuantityLimits, MdAttribution } from 'react-icons/md';
 import { SiBrandfolder } from 'react-icons/si';
 import { RiMoneyDollarBoxFill } from 'react-icons/ri';
 import { TbLayoutDashboard } from 'react-icons/tb';
@@ -49,6 +49,7 @@ export {
   FiSettings,
   GrUserManager,
   HiUserGroup,
+  MdAttribution,
   SiBrandfolder,
   TbLayoutDashboard,
   TfiReload,
