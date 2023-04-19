@@ -32,9 +32,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const res: AxiosResponse<any> = await getShop(query);
   const { data } = res;
 
-  const paths = data?.data?.map((category: IShop) => ({
+  const paths = data?.data?.map((item: IShop) => ({
     params: {
-      id: category.key.toString(),
+      id: item._id.toString(),
     },
   }));
   return {

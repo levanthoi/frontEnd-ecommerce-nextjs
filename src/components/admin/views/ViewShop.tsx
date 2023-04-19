@@ -78,30 +78,27 @@ const ViewShop: React.FC<Props> = ({ row }) => {
    * @param value : IShop
    */
   const handleSubmit = async (value: IShop) => {
-    const addItem = { ...value, slug: '' };
+    const addItem = { ...value };
     console.log('addItem', addItem);
 
-    // let res: AxiosResponse<any>;
-    // try {
-    //   if (row) {
-    //     const arg = {
-    //       id: row.key,
-    //       payload: addItem,
-    //     };
-    //     res = await updateShop(arg);
-    //   } else {
-    //     // console.log('add');
-
-    //     res = await createShop(addItem);
-    //     // console.log('rés', res);
-    //   }
-    //   const { message, success } = res.data;
-    //   Notification(message, success);
-    //   router.back();
-    // } catch (e: any) {
-    //   const { message, success } = e.data;
-    //   Notification(message, success);
-    // }
+    let res: AxiosResponse<any>;
+    try {
+      if (row) {
+        const arg = {
+          id: row._id,
+          payload: addItem,
+        };
+        res = await updateShop(arg);
+      } else {
+        res = await createShop(addItem);
+      }
+      const { message, success } = res.data;
+      Notification(message, success);
+      router.back();
+    } catch (e: any) {
+      const { message, success } = e.data;
+      Notification(message, success);
+    }
   };
 
   return (
@@ -140,7 +137,7 @@ const ViewShop: React.FC<Props> = ({ row }) => {
               {isActive.info ? (
                 <>
                   <Item
-                    name={['seller', 'name']}
+                    name={['seller', 'title']}
                     label={t.name}
                     rules={[{ required: true, message: t.emptyName }]}
                   >
@@ -186,7 +183,7 @@ const ViewShop: React.FC<Props> = ({ row }) => {
             {isActive.general ? (
               <>
                 <Item
-                  name={['shop', 'name']}
+                  name={['shop', 'title']}
                   label={t.name}
                   rules={[{ required: true, message: t.emptyName }]}
                 >
@@ -265,7 +262,7 @@ export default ViewShop;
 
 // const a = {
 //   seller: {
-//     title: 'name',
+//     title: 'title',
 //     phone: '09234234',
 //     email: 'abc@gmail.com',
 //     avatar: '',

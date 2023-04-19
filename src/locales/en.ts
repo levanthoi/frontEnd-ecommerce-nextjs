@@ -101,7 +101,7 @@ const en: { [key: string]: string } = {
   avatar: 'Avatar',
   licenseNumber: 'License Number',
   setups: 'Setups',
-  currentlyOpen: 'Currently Number',
+  currentlyOpen: 'Currently Open',
   selfDelivery: 'Self Delivery',
   takeAway: 'Take Away',
   openForDelivery: 'Open For Delivery',

@@ -33,9 +33,9 @@ const Shops: NextPage<Props> = ({ data }) => {
   const handleDelete = async (record: IShop) => {
     console.log('record', record);
     try {
-      const res: AxiosResponse<any> = await deleteShop(record.key);
+      const res: AxiosResponse<any> = await deleteShop(record._id);
       const { message, success } = res.data;
-      const afterDelete = dataShop?.filter((shop) => shop.key !== record.key);
+      const afterDelete = dataShop?.filter((shop) => shop._id !== record._id);
       setDataShop(afterDelete);
       Notification(message, success);
     } catch (e: any) {
@@ -49,7 +49,7 @@ const Shops: NextPage<Props> = ({ data }) => {
    */
   const handleEdit = async (record: IShop) => {
     // console.log('record', record);
-    router.push(`${router.asPath}/${record.key}`);
+    router.push(`${router.asPath}/${record._id}`);
   };
 
   /**
@@ -64,23 +64,22 @@ const Shops: NextPage<Props> = ({ data }) => {
     },
     {
       title: t.name,
-      dataIndex: 'title',
+      dataIndex: ['shop', 'title'],
       // width: '25%',
     },
     {
-      title: t.values,
-      dataIndex: 'variants',
-      render: (text) =>
-        text?.map((item: any) => (
-          <Space key={item?.name} wrap>
-            <Tag color="purple">{item?.name}</Tag>
-          </Space>
-        )),
+      title: t.email,
+      dataIndex: ['shop', 'email'],
+      // width: '25%',
+    },
+    {
+      title: t.mobileNumber,
+      dataIndex: ['shop', 'phone'],
       // width: '25%',
     },
     {
       title: t.status,
-      dataIndex: 'status',
+      dataIndex: ['shop', 'currentlyOpen'],
       // width: '10%',
       render: (text) => (
         <Switch
@@ -112,7 +111,7 @@ const Shops: NextPage<Props> = ({ data }) => {
   return (
     <>
       <NavTab />
-      <Table columns={columns} dataSource={dataShop} onChange={onChange} />
+      <Table columns={columns} dataSource={dataShop} rowKey="_id" onChange={onChange} />
     </>
   );
 };
