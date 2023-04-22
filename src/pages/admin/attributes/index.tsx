@@ -12,31 +12,31 @@ import { Button, Popconfirm, Space, Switch, Table, Tag } from 'antd';
 import * as icon from '@/icons';
 // other
 import { useLanguage } from '@/hooks/useLanguage';
-import { deleteShop, getShop } from '@/services/shop.service';
+import { deleteAttribute, getAttribute } from '@/services/attribute.service';
 import { Notification } from '@/components/UI/Notification';
-import { IShop } from '@/lib/types/admin/shops/shop.type';
+import { IAttribute } from '@/lib/types/admin/attributes/attribute.type';
 
 const NavTab = dynamic(() => import('@/components/admin/navTab/NavTab'), {
   ssr: false,
 });
 
 interface Props {
-  data: IShop[];
+  data: IAttribute[];
 }
 
-const Shops: NextPage<Props> = ({ data }) => {
+const Attributes: NextPage<Props> = ({ data }) => {
   const { t } = useLanguage();
   const router = useRouter();
 
-  const [dataShop, setDataShop] = useState<Array<IShop> | []>(data || []);
+  const [dataAttribute, setDataAttribute] = useState<Array<IAttribute> | []>(data || []);
 
-  const handleDelete = async (record: IShop) => {
+  const handleDelete = async (record: IAttribute) => {
     console.log('record', record);
     try {
-      const res: AxiosResponse<any> = await deleteShop(record._id);
+      const res: AxiosResponse<any> = await deleteAttribute(record.key);
       const { message, success } = res.data;
-      const afterDelete = dataShop?.filter((shop) => shop._id !== record._id);
-      setDataShop(afterDelete);
+      const afterDelete = dataAttribute?.filter((attribute) => attribute.key !== record.key);
+      setDataAttribute(afterDelete);
       Notification(message, success);
     } catch (e: any) {
       const { message, success } = e.data;
@@ -45,17 +45,17 @@ const Shops: NextPage<Props> = ({ data }) => {
   };
   /**
    * @description  : Edit a Row Table
-   * @param record : IShop
+   * @param record : IAttribute
    */
-  const handleEdit = async (record: IShop) => {
+  const handleEdit = async (record: IAttribute) => {
     // console.log('record', record);
-    router.push(`${router.asPath}/${record._id}`);
+    router.push(`${router.asPath}/${record.key}`);
   };
 
   /**
    * @description : Khởi tạo Column
    */
-  const columns: ColumnsType<IShop> = [
+  const columns: ColumnsType<IAttribute> = [
     {
       title: 'ID',
       dataIndex: '',
@@ -64,22 +64,23 @@ const Shops: NextPage<Props> = ({ data }) => {
     },
     {
       title: t.name,
-      dataIndex: ['shop', 'title'],
+      dataIndex: 'title',
       // width: '25%',
     },
     {
-      title: t.email,
-      dataIndex: ['shop', 'email'],
-      // width: '25%',
-    },
-    {
-      title: t.mobileNumber,
-      dataIndex: ['shop', 'phone'],
+      title: t.values,
+      dataIndex: 'variants',
+      render: (text) =>
+        text?.map((item: any) => (
+          <Space key={item?.name} wrap>
+            <Tag color="purple">{item?.name}</Tag>
+          </Space>
+        )),
       // width: '25%',
     },
     {
       title: t.status,
-      dataIndex: ['shop', 'currentlyOpen'],
+      dataIndex: 'status',
       // width: '10%',
       render: (text) => (
         <Switch
@@ -104,25 +105,25 @@ const Shops: NextPage<Props> = ({ data }) => {
     },
   ];
 
-  const onChange: TableProps<IShop>['onChange'] = (pagination, filters, sorter, extra) => {
+  const onChange: TableProps<IAttribute>['onChange'] = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
   };
 
   return (
     <>
       <NavTab />
-      <Table columns={columns} dataSource={dataShop} rowKey="_id" onChange={onChange} />
+      <Table columns={columns} dataSource={dataAttribute} onChange={onChange} />
     </>
   );
 };
 
-export default Shops;
+export default Attributes;
 
 export const getStaticProps: GetStaticProps = async () => {
   const query = {
     fields: '',
   };
-  const res: AxiosResponse<any> = await getShop(query);
+  const res: AxiosResponse<any> = await getAttribute(query);
   const { data } = res;
   return {
     props: { data: data.data }, // will be passed to the page component as props

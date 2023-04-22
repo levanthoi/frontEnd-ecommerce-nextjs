@@ -1,26 +1,26 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import dynamic from 'next/dynamic';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import { AxiosResponse } from 'axios';
 import { useLanguage } from '@/hooks/useLanguage';
-import { getCateProd, getoneCateProd } from '@/services/cateProd.service';
-import { ICateProd } from '@/lib/types/admin/cateProd.type';
+import { IShop } from '@/lib/types/admin/shops/shop.type';
+import { getShop, getoneShop } from '@/services/shop.service';
 
-const ViewCategory = dynamic(() => import('@/components/admin/views/ViewCategory'), {
+const ViewShop = dynamic(() => import('@/components/admin/views/ViewShop'), {
   ssr: false,
 });
 
-const Edit: NextPage<{ row: ICateProd }> = ({ row }) => {
+const Edit: NextPage<{ row: IShop }> = ({ row }) => {
   const { t } = useLanguage();
 
   return (
     <>
       <Head>
-        <title>{`${t.edit} ${t.categories}`}</title>
+        <title>{`${t.edit} ${t.shops}`}</title>
       </Head>
-      <ViewCategory row={row} />
+      <ViewShop row={row} />
     </>
   );
 };
@@ -29,12 +29,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const query = {
     fields: 'key',
   };
-  const res: AxiosResponse<any> = await getCateProd(query);
+  const res: AxiosResponse<any> = await getShop(query);
   const { data } = res;
 
-  const paths = data?.data?.map((category: ICateProd) => ({
+  const paths = data?.data?.map((item: IShop) => ({
     params: {
-      id: category.key.toString(),
+      id: item._id.toString(),
     },
   }));
   return {
@@ -47,7 +47,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const param = {
     id: context.params?.id,
   };
-  const res: AxiosResponse<any> = await getoneCateProd(param);
+  const res: AxiosResponse<any> = await getoneShop(param);
   const category = res.data.data;
   return {
     props: {

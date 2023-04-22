@@ -6,10 +6,14 @@ import { useRouter } from 'next/router';
 import type { MenuProps } from 'antd';
 import dynamic from 'next/dynamic';
 import * as icon from '@/icons';
-import BreadCrumb from '@/components/UI/breadcrumb';
 import { useLanguage } from '@/hooks/useLanguage';
 
-const Header = dynamic(() => import('@/components/admin/header'));
+const BreadCrumb = dynamic(() => import('@/components/UI/breadcrumb'), {
+  ssr: false,
+});
+const Header = dynamic(() => import('@/components/admin/header'), {
+  ssr: false,
+});
 
 interface Props {
   children: React.ReactNode;
@@ -29,6 +33,11 @@ const itemMenu = [
     type: 'group',
     children: [
       {
+        key: 'shops',
+        label: 'shops',
+        icon: <icon.AiOutlineShop />,
+      },
+      {
         key: 'cateProd',
         label: 'categories',
         icon: <icon.VscSymbolMisc />,
@@ -37,6 +46,11 @@ const itemMenu = [
         key: 'brands',
         label: 'brands',
         icon: <icon.SiBrandfolder />,
+      },
+      {
+        key: 'attributes',
+        label: 'attributes',
+        icon: <icon.MdAttribution />,
       },
       {
         key: 'products',
@@ -154,7 +168,8 @@ const AdminLayout: React.FC<Props> = ({ children }) => {
       <Layout>
         <Sider theme="light" trigger={null} collapsible collapsed={collapsed}>
           <div className="w-full max-h-full">
-            <Image width={100} height={30} src="/images/logo.png" alt="logo" />
+            {/* LOGO. */}
+            <Image width={100} height={30} src="/images/logo.png" alt="logo" priority />
           </div>
           <Menu
             onClick={handleClickMenu}

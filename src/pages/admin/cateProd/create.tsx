@@ -1,8 +1,12 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useLanguage } from '@/hooks/useLanguage';
-import ViewCategory from '@/components/admin/views/ViewCategory';
+
+const ViewCategory = dynamic(() => import('@/components/admin/views/ViewCategory'), {
+  ssr: false,
+});
 
 const Create: NextPage = () => {
   const { t } = useLanguage();
