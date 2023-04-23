@@ -1,3 +1,8 @@
+import { IAttribute } from '../attributes/attribute.type';
+import { IBrand } from '../brands/brand.type';
+import { ICateProd } from '../cateProd.type';
+import { IShop } from '../shops/shop.type';
+
 export interface IRating {
   star?: number;
   comment?: string;
@@ -5,17 +10,31 @@ export interface IRating {
 }
 
 export interface IProduct {
-  key?: string;
+  _id: string;
   title: string;
   description?: string;
   slug?: string;
-  price: number;
+  unitPrice: number;
+  purchasePrice: number;
   quantity: number;
   sold?: number;
   images?: string[];
-  color?: string;
-  brand?: string;
-  category?: string;
+  brand?: IBrand;
+  category?: ICateProd;
+  shop?: IShop['shop'];
+  variants?: Array<{ _id: string; variant?: string; value: string[] }>;
+  // attributes: IAttribute[];
+  discount: string;
+  tax: string;
+  productType: string;
+  sku: string;
+  unit: string;
   ratings?: IRating[];
+  details?: Array<{
+    variant: string;
+    stock: number;
+    sku: string;
+    variantPrice: number;
+  }>;
   totalRatings?: string;
 }

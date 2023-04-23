@@ -1,7 +1,7 @@
 export interface IShop {
   _id: string;
-  seller: {
-    _id?: string;
+  seller?: {
+    _id: string;
     title?: string;
     phone?: string;
     email?: string;
@@ -9,7 +9,7 @@ export interface IShop {
     is_owner?: string;
   };
   shop: {
-    _id?: string;
+    _id: string;
     title: string;
     phone: string;
     email: string;

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Button,
   Card,
@@ -25,7 +25,6 @@ import dynamic from 'next/dynamic';
 import { AxiosResponse } from 'axios';
 //
 import { useLanguage } from '@/hooks/useLanguage';
-import { ICateProd } from '@/lib/types/admin/cateProd.type';
 import * as icon from '@/icons';
 import { createCateProd, updateCateProd } from '@/services/cateProd.service';
 import { Notification } from '@/components/UI/Notification';
@@ -34,6 +33,12 @@ import { useGetBrands } from '@/hooks/useGetBrands';
 import { useGetAttributes } from '@/hooks/useGetAttributes';
 import { IAttribute } from '@/lib/types/admin/attributes/attribute.type';
 import { cartesianProduct, formatNumber } from '@/utils/helpers';
+import { getActiveShop, getShop } from '@/services/shop.service';
+import { getActiveBrand } from '@/services/brand.service';
+import { IShop } from '@/lib/types/admin/shops/shop.type';
+import { IBrand } from '@/lib/types/admin/brands/brand.type';
+import { createProduct, updateProduct } from '@/services/product.service';
+import { IProduct } from '@/lib/types/admin/products/product.type';
 
 // import MyCKEditor from '../CKEditor';
 // import { RootState } from '@/redux/reducers/rootReducer';
@@ -41,8 +46,7 @@ import { cartesianProduct, formatNumber } from '@/utils/helpers';
 // const MyEditor = dynamic(() => import('../CKEditor'), { ssr: false });
 
 interface Props {
-  row: ICateProd | null;
-  //   cateProds?: ICateProd[];
+  row: IProduct | null;
 }
 
 interface IVariant {
@@ -56,61 +60,49 @@ interface IValAttribute {
   [key: string]: string[];
 }
 
-const before = [
-  { variant: 'Color', value: ['blue', 'white'] },
-  { variant: 'Size', value: ['s', 'm'] },
-];
-
-const after = [
-  {
-    variant: 'blue-s',
-    variantPrice: 1,
-    sku: '-blue-s',
-    stock: 1,
-  },
-  {
-    variant: 'white-s',
-    variantPrice: 1,
-    sku: '-white-s',
-    stock: 1,
-  },
-  {
-    variant: 'blue-m',
-    variantPrice: 1,
-    sku: '-blue-m',
-    stock: 1,
-  },
-  {
-    variant: 'white-m',
-    variantPrice: 1,
-    sku: '-white-m',
-    stock: 1,
-  },
-];
-
 const ViewProduct: React.FC<Props> = ({ row }) => {
   const { t, locale } = useLanguage();
   const router = useRouter();
-  const [form] = Form.useForm<ICateProd>();
+  const [form] = Form.useForm<IShop>();
   const { Item, List } = Form;
 
   const [status, setStatus] = useState<boolean>(true);
   const [attrVal, setAttrVal] = useState<IValAttribute>({});
   const [attrVar, setAttrVar] = useState<string>('');
   const [dataSource, setDataSource] = useState<IVariant[] | []>([]);
-  // const [brands, setBrands] = useState<IBrand[] | []>([])
+
+  const [shops, setShops] = useState<IShop[] | []>([]);
+  const [brands, setBrands] = useState<IBrand[] | []>([]);
+
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   // const [editorLoaded, setEditorLoaded] = useState<boolean>(false);
   // const [desc, setDesc] = useState<string>('');
   const { categories } = useGetCateProd();
-  const { brands } = useGetBrands();
   const { attributes } = useGetAttributes();
+
+  const fetch = useCallback(async () => {
+    const query = {
+      fields: '',
+    };
+    const fetchShop = getActiveShop(query);
+    const fetchBrand = getActiveBrand(query);
+    const shop = await fetchShop;
+    const brand = await fetchBrand;
+    setShops(shop?.data?.data);
+    setBrands(brand?.data?.data);
+  }, []);
+
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
 
   useEffect(() => {
     console.log('row', row);
 
-    if (row) form.setFieldsValue(row);
-    else form.resetFields();
+    if (row) {
+      form.setFieldsValue(row);
+      setDataSource(row?.details || []);
+    } else form.resetFields();
   }, [form, row]);
 
   const valVariant = useMemo(() => {
@@ -156,40 +148,44 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
     console.log('dataSource', dataSource);
   };
 
-  const handleChangePrice = (e: React.ChangeEvent<HTMLInputElement>, record: IVariant) => {
+  const handleChangeDetail = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    text: string,
+    record: IVariant,
+  ) => {
     const update: IVariant[] = dataSource?.map((item: IVariant) =>
-      item?.sku === record?.sku ? { ...item, variantPrice: Number(e.target.value) } : item,
+      item?.sku === record?.sku ? { ...item, [text]: Number(e.target.value) } : item,
     );
-    // console.log('update', update);
+    console.log('update', update);
     setDataSource(update);
   };
 
   /**
    * @description : submit form
-   * @param value : ICateProd
+   * @param value : IShop
    */
-  const handleSubmit = async (value: ICateProd) => {
-    const addItem = { ...value, status };
+  const handleSubmit = async (value: IShop) => {
+    const addItem = { ...value, details: dataSource, status };
     console.log('addItem', addItem);
 
-    // let res: AxiosResponse<any>;
-    // try {
-    //   if (row) {
-    //     const arg = {
-    //       id: row.key,
-    //       payload: addItem,
-    //     };
-    //     res = await updateCateProd(arg);
-    //   } else {
-    //     res = await createCateProd(addItem);
-    //   }
-    //   const { message, success } = res.data;
-    //   Notification(message, success);
-    //   router.back();
-    // } catch (e: any) {
-    //   const { message, success } = e.data;
-    //   Notification(message, success);
-    // }
+    let res: AxiosResponse<any>;
+    try {
+      if (row) {
+        const arg = {
+          id: row._id,
+          payload: addItem,
+        };
+        res = await updateProduct(arg);
+      } else {
+        res = await createProduct(addItem);
+      }
+      const { message, success } = res.data;
+      Notification(message, success);
+      router.back();
+    } catch (e: any) {
+      const { message, success } = e.data;
+      Notification(message, success);
+    }
   };
 
   const titleCard = (params: string) => {
@@ -211,18 +207,22 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
       title: t.variantPrice,
       dataIndex: 'variantPrice',
       render: (text, record) => (
-        <Input value={text} onChange={(e) => handleChangePrice(e, record)} />
+        <Input value={text} onChange={(e) => handleChangeDetail(e, 'variantPrice', record)} />
       ),
     },
     {
       title: t.sku,
       dataIndex: 'sku',
-      render: (text) => <Input value={text} />,
+      render: (text, record) => (
+        <Input value={text} onChange={(e) => handleChangeDetail(e, 'sku', record)} />
+      ),
     },
     {
       title: t.stock,
       dataIndex: 'stock',
-      render: (text) => <Input value={text} />,
+      render: (text, record) => (
+        <Input value={text} onChange={(e) => handleChangeDetail(e, 'stock', record)} />
+      ),
     },
   ];
 
@@ -249,12 +249,12 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
     return newItem;
   }, [attributes]);
 
-  const shops = [
-    {
-      label: 'BigC',
-      value: 'bigc',
-    },
-  ];
+  // const shops = [
+  //   {
+  //     label: 'BigC',
+  //     value: 'bigc',
+  //   },
+  // ];
   const productType = [
     {
       label: 'Physical',
@@ -287,14 +287,17 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
       <Select.Option value="exclude">{t.exclude}</Select.Option>
     </Select>
   );
-  const initialValues = {
-    shop: 'bigc',
-    productType: 'physical',
-    category: categories[0]?.value || '',
-    brands: brands[0]?.title || '',
-    unit: units[0]?.label || '',
-  };
+  // const initialValues = {
+  //   shop: shops[0]?._id || '',
+  //   productType: 'physical',
+  //   category: categories[0]?.value || '',
+  //   brands: brands[0]?._id || '',
+  //   unit: units[0]?.label || '',
+  // };
   console.log('pre-render ViewProduct 198', nameVariant);
+  console.log('pre-render attrVal', attrVal);
+  console.log('pre-render attrVar', attrVar);
+  console.log('pre-render variant', form.getFieldValue('variant'));
 
   return (
     <Form
@@ -302,7 +305,7 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
       layout="vertical"
       labelCol={{ span: 12 }}
       autoComplete="off"
-      initialValues={initialValues}
+      // initialValues={initialValues}
       onFinish={handleSubmit}
     >
       {/* <Space direction="vertical"> */}
@@ -331,7 +334,13 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
         <Row gutter={16} wrap>
           <Col className="gutter-row" span={8}>
             <Item name="shop" label={t.shop}>
-              <Select options={shops} />
+              <Select optionLabelProp="label">
+                {shops?.map((shop: IShop) => (
+                  <Select.Option key={shop?._id} value={shop?._id} label={shop?.shop?.title}>
+                    {shop?.shop?.title}
+                  </Select.Option>
+                ))}
+              </Select>
             </Item>
           </Col>
           <Col className="gutter-row" span={8}>
@@ -345,8 +354,14 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
             </Item>
           </Col>
           <Col className="gutter-row" span={8}>
-            <Item name="brands" label={t.brands}>
-              <Select options={brands} />
+            <Item name="brand" label={t.brands}>
+              <Select optionLabelProp="label">
+                {brands?.map((brand: IBrand) => (
+                  <Select.Option key={brand?._id} value={brand?._id} label={brand?.title}>
+                    {brand?.title}
+                  </Select.Option>
+                ))}
+              </Select>
             </Item>
           </Col>
           <Col className="gutter-row" span={8}>
@@ -430,7 +445,7 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
               </Col>
               <Col span={6}>
                 <Item name="purchasePrice" label={t.purchasePrice}>
-                  <Input />
+                  <InputNumber style={{ width: '100%' }} />
                 </Item>
               </Col>
               <Col span={6}>
