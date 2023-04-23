@@ -38,6 +38,7 @@ import { getActiveBrand } from '@/services/brand.service';
 import { IShop } from '@/lib/types/admin/shops/shop.type';
 import { IBrand } from '@/lib/types/admin/brands/brand.type';
 import { createProduct, updateProduct } from '@/services/product.service';
+import { IProduct } from '@/lib/types/admin/products/product.type';
 
 // import MyCKEditor from '../CKEditor';
 // import { RootState } from '@/redux/reducers/rootReducer';
@@ -45,7 +46,7 @@ import { createProduct, updateProduct } from '@/services/product.service';
 // const MyEditor = dynamic(() => import('../CKEditor'), { ssr: false });
 
 interface Props {
-  row: IShop | null;
+  row: IProduct | null;
 }
 
 interface IVariant {
@@ -98,8 +99,10 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
   useEffect(() => {
     console.log('row', row);
 
-    if (row) form.setFieldsValue(row);
-    else form.resetFields();
+    if (row) {
+      form.setFieldsValue(row);
+      setDataSource(row?.details || []);
+    } else form.resetFields();
   }, [form, row]);
 
   const valVariant = useMemo(() => {
@@ -162,7 +165,7 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
    * @param value : IShop
    */
   const handleSubmit = async (value: IShop) => {
-    const addItem = { ...value, status };
+    const addItem = { ...value, details: dataSource, status };
     console.log('addItem', addItem);
 
     let res: AxiosResponse<any>;
@@ -284,14 +287,17 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
       <Select.Option value="exclude">{t.exclude}</Select.Option>
     </Select>
   );
-  const initialValues = {
-    shop: shops[0]?._id || '',
-    productType: 'physical',
-    category: categories[0]?.value || '',
-    brands: brands[0]?._id || '',
-    unit: units[0]?.label || '',
-  };
+  // const initialValues = {
+  //   shop: shops[0]?._id || '',
+  //   productType: 'physical',
+  //   category: categories[0]?.value || '',
+  //   brands: brands[0]?._id || '',
+  //   unit: units[0]?.label || '',
+  // };
   console.log('pre-render ViewProduct 198', nameVariant);
+  console.log('pre-render attrVal', attrVal);
+  console.log('pre-render attrVar', attrVar);
+  console.log('pre-render variant', form.getFieldValue('variant'));
 
   return (
     <Form
@@ -299,7 +305,7 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
       layout="vertical"
       labelCol={{ span: 12 }}
       autoComplete="off"
-      initialValues={initialValues}
+      // initialValues={initialValues}
       onFinish={handleSubmit}
     >
       {/* <Space direction="vertical"> */}
@@ -327,7 +333,7 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
       <Card title={t.generalInfo}>
         <Row gutter={16} wrap>
           <Col className="gutter-row" span={8}>
-            <Item name="shop_id" label={t.shop}>
+            <Item name="shop" label={t.shop}>
               <Select optionLabelProp="label">
                 {shops?.map((shop: IShop) => (
                   <Select.Option key={shop?._id} value={shop?._id} label={shop?.shop?.title}>
@@ -343,12 +349,12 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
             </Item>
           </Col>
           <Col className="gutter-row" span={8}>
-            <Item name="category_id" label={t.category}>
+            <Item name="category" label={t.category}>
               <TreeSelect treeData={categories} />
             </Item>
           </Col>
           <Col className="gutter-row" span={8}>
-            <Item name="brand_id" label={t.brands}>
+            <Item name="brand" label={t.brands}>
               <Select optionLabelProp="label">
                 {brands?.map((brand: IBrand) => (
                   <Select.Option key={brand?._id} value={brand?._id} label={brand?.title}>

@@ -1,4 +1,7 @@
 import { IAttribute } from '../attributes/attribute.type';
+import { IBrand } from '../brands/brand.type';
+import { ICateProd } from '../cateProd.type';
+import { IShop } from '../shops/shop.type';
 
 export interface IRating {
   star?: number;
@@ -7,7 +10,7 @@ export interface IRating {
 }
 
 export interface IProduct {
-  _id?: string;
+  _id: string;
   title: string;
   description?: string;
   slug?: string;
@@ -16,11 +19,11 @@ export interface IProduct {
   quantity: number;
   sold?: number;
   images?: string[];
-  brand_id?: string;
-  category_id?: string;
-  shop_id?: string;
-  variants?: Array<{ variant: string; value: string[] }>;
-  attributes: IAttribute[];
+  brand?: IBrand;
+  category?: ICateProd;
+  shop?: IShop['shop'];
+  variants?: Array<{ _id: string; variant?: string; value: string[] }>;
+  // attributes: IAttribute[];
   discount: string;
   tax: string;
   productType: string;
