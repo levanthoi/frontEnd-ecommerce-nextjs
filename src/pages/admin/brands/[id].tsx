@@ -34,9 +34,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const res: AxiosResponse<any> = await getBrand(query);
   const { data } = res;
 
-  const paths = data?.data?.map((category: IBrand) => ({
+  const paths = data?.data?.map((brand: IBrand) => ({
     params: {
-      id: category.key.toString(),
+      id: brand.key.toString(),
     },
   }));
   return {
@@ -50,10 +50,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
     id: context.params?.id,
   };
   const res: AxiosResponse<any> = await getoneBrand(param);
-  const category = res.data.data;
+  const brand = res.data.data;
   return {
     props: {
-      row: category,
+      row: brand,
     },
   };
 };

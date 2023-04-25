@@ -24,6 +24,7 @@ const vi: { [key: string]: string } = {
   requiredPassword: 'Vui lòng nhập mật khẩu!',
   emptyPassword: 'Password không được trống!',
   login: 'Đăng nhập',
+  showAll: 'Tất cả',
 
   // ==== admin ====
   revenues: 'Doanh thu',

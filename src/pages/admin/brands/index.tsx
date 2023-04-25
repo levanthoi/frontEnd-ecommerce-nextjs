@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import type { NextPage } from 'next';
 import { AxiosResponse } from 'axios';
-import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 
 // antd
@@ -20,24 +19,40 @@ const NavTab = dynamic(() => import('@/components/admin/navTab/NavTab'), {
   ssr: false,
 });
 
-interface Props {
-  data: IBrand[];
-}
+// interface Props {
+//   data: IBrand[];
+// }
 
-const Brands: NextPage<Props> = ({ data }) => {
+const Brands: NextPage = () => {
   const { t } = useLanguage();
   const router = useRouter();
 
-  const [dataBrand, setDataBrand] = useState<Array<IBrand> | []>(data || []);
+  const [dataBrand, setDataBrand] = useState<Array<IBrand> | []>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const fetch = useCallback(async () => {
+    const query = {
+      fields: '',
+    };
+    setIsLoading(true);
+    const res: AxiosResponse<any> = await getBrand(query);
+    setDataBrand(res?.data?.data);
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
 
   const handleDelete = async (record: IBrand) => {
     console.log('record', record);
     try {
       const res: AxiosResponse<any> = await deleteBrand(record.key);
       const { message, success } = res.data;
-      const afterDelete = dataBrand?.filter((brand) => brand.key !== record.key);
-      setDataBrand(afterDelete);
       Notification(message, success);
+      fetch();
+      // const afterDelete = dataBrand?.filter((brand) => brand.key !== record.key);
+      // setDataBrand(afterDelete);
     } catch (e: any) {
       const { message, success } = e.data;
       Notification(message, success);
@@ -106,21 +121,27 @@ const Brands: NextPage<Props> = ({ data }) => {
 
   return (
     <>
-      <NavTab />
-      <Table columns={columns} dataSource={dataBrand} onChange={onChange} />
+      <NavTab fetchList={fetch} />
+      <Table
+        columns={columns}
+        dataSource={dataBrand}
+        loading={isLoading}
+        rowKey="_id"
+        onChange={onChange}
+      />
     </>
   );
 };
 
 export default Brands;
 
-export const getStaticProps: GetStaticProps = async () => {
-  const query = {
-    fields: '',
-  };
-  const res: AxiosResponse<any> = await getBrand(query);
-  const { data } = res;
-  return {
-    props: { data: data.data }, // will be passed to the page component as props
-  };
-};
+// export const getStaticProps: GetStaticProps = async () => {
+//   const query = {
+//     fields: '',
+//   };
+//   const res: AxiosResponse<any> = await getBrand(query);
+//   const { data } = res;
+//   return {
+//     props: { data: data?.data || [] }, // will be passed to the page component as props
+//   };
+// };
