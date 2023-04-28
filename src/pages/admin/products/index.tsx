@@ -33,7 +33,7 @@ const Products: NextPage = () => {
   const initColumns: ColumnsType<IProduct> = [
     {
       title: 'ID',
-      dataIndex: '',
+      dataIndex: '_id',
       // width: '10%',
       render: (text, _, index) => index + 1,
     },
@@ -144,14 +144,16 @@ const Products: NextPage = () => {
 
   const onExportExcel = async () => {
     try {
-      const headerName = columns?.map((column: any) => column?.title);
+      // const headerName = columns?.map((column: any) => column?.title)?.pop();
       const params = {
-        headerName,
+        columns: columns?.slice(0, -1),
       };
       const res = await exportProduct(params);
+      const { message, success } = res.data;
+      Notification(message, success);
       console.log('res', res);
     } catch (e: any) {
-      console.log(e);
+      Notification(e?.data?.message, e?.data?.success);
     }
   };
 
