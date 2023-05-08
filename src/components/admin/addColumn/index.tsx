@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Button, Checkbox } from 'antd';
 import type { CheckboxValueType } from 'antd/es/checkbox/Group';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
+
+// icon
+import { AiOutlineShop } from 'react-icons/ai';
+
 import { useLanguage } from '@/hooks/useLanguage';
-import * as icon from '@/icons';
 
 interface Props {
   columns: any;
@@ -42,7 +45,7 @@ const AddColumn: React.FC<Props> = ({ columns, handleAddColumn = () => {} }) => 
     <div className="relative">
       <Button
         className="text-green-700 bg-green-200"
-        icon={<icon.AiOutlineShop />}
+        icon={<AiOutlineShop />}
         onClick={() => setVisible(!visible)}
       />
       {visible && (

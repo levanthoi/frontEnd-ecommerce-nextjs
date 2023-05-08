@@ -1,12 +1,12 @@
 import React from 'react';
 
 export interface ICateProd {
-  _id: React.Key;
-  key: React.Key;
+  _id?: React.Key;
+  key?: React.Key;
   name: string;
   status?: boolean;
   parent?: React.Key;
-  image?: string;
+  image?: string | any;
   slug?: string;
   description: string;
   order: number;
