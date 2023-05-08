@@ -3,11 +3,12 @@ import { AxiosResponse } from 'axios';
 // import { GetStaticProps } from 'next';
 import dynamic from 'next/dynamic';
 import type { ColumnsType, TableProps } from 'antd/es/table';
-import { Button, Popconfirm, Space, Switch, Table } from 'antd';
+import { Button, Image, Popconfirm, Space, Switch, Table } from 'antd';
 // import Link from 'next/link';
 import { useRouter } from 'next/router';
 // import { useDispatch } from 'react-redux';
-import * as icon from '@/icons';
+// icon
+import { AiOutlineDelete, AiOutlineEdit, AiOutlineClose, AiOutlineCheck } from 'react-icons/ai';
 import { useLanguage } from '@/hooks/useLanguage';
 import { ICateProd } from '@/lib/types/admin/cateProd.type';
 import { deleteCateProd, getCateProd } from '@/services/cateProd.service';
@@ -16,6 +17,9 @@ import { Notification } from '@/components/UI/Notification';
 const NavTab = dynamic(() => import('@/components/admin/navTab/NavTab'), {
   ssr: false,
 });
+// const Notification = dynamic(() => import('@/components/UI/Notification').then(module => module.default), {
+//   ssr: false,
+// });
 
 // interface Props {
 //   data: ICateProd[];
@@ -105,9 +109,10 @@ const Categories: React.FC = () => {
     try {
       const res: AxiosResponse<any> = await deleteCateProd(record.key);
       const { message, success } = res.data;
-      const afterDelete = dataCateProd?.filter((cateProd) => cateProd.key !== record.key);
-      setDataCateProd(afterDelete);
+      // const afterDelete = dataCateProd?.filter((cateProd) => cateProd.key !== record.key);
+      // setDataCateProd(afterDelete);
       Notification(message, success);
+      fetch();
     } catch (e: any) {
       const { message, success } = e.data;
       Notification(message, success);
@@ -138,8 +143,9 @@ const Categories: React.FC = () => {
     },
     {
       title: t.image,
-      dataIndex: 'image',
+      dataIndex: ['image', 'url'],
       width: '15%',
+      render: (text) => <Image src={text} alt={text} />,
     },
     {
       title: t.name,
@@ -157,8 +163,8 @@ const Categories: React.FC = () => {
       width: '10%',
       render: (text) => (
         <Switch
-          checkedChildren={<icon.AiOutlineCheck />}
-          unCheckedChildren={<icon.AiOutlineClose />}
+          checkedChildren={<AiOutlineCheck />}
+          unCheckedChildren={<AiOutlineClose />}
           checked={text}
         />
       ),
@@ -169,9 +175,9 @@ const Categories: React.FC = () => {
       width: '10%',
       render: (_, record) => (
         <Space wrap>
-          <Button type="primary" icon={<icon.AiOutlineEdit />} onClick={() => handleEdit(record)} />
+          <Button type="primary" icon={<AiOutlineEdit />} onClick={() => handleEdit(record)} />
           <Popconfirm title="Chắc chắn xóa?" onConfirm={() => handleDelete(record)}>
-            <Button type="primary" danger icon={<icon.AiOutlineDelete />} />
+            <Button type="primary" danger icon={<AiOutlineDelete />} />
           </Popconfirm>
         </Space>
       ),
