@@ -36,7 +36,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   const paths = data?.data?.map((brand: IBrand) => ({
     params: {
-      id: brand.key.toString(),
+      id: brand?.key?.toString(),
     },
   }));
   return {

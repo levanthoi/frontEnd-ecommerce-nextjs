@@ -8,7 +8,7 @@ import type { ColumnsType, TableProps } from 'antd/es/table';
 import { Button, Popconfirm, Space, Switch, Table } from 'antd';
 import { AxiosResponse } from 'axios';
 // icon
-import * as icon from '@/icons';
+import { AiOutlineClose, AiOutlineCheck, AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
 // other
 import { useLanguage } from '@/hooks/useLanguage';
 import { deleteProduct, exportProduct, getProduct } from '@/services/product.service';
@@ -73,8 +73,8 @@ const Products: NextPage = () => {
       // width: '10%',
       render: (text) => (
         <Switch
-          checkedChildren={<icon.AiOutlineCheck />}
-          unCheckedChildren={<icon.AiOutlineClose />}
+          checkedChildren={<AiOutlineCheck />}
+          unCheckedChildren={<AiOutlineClose />}
           checked={text}
         />
       ),
@@ -85,9 +85,9 @@ const Products: NextPage = () => {
       // width: '10%',
       render: (_, record) => (
         <Space wrap>
-          <Button type="primary" icon={<icon.AiOutlineEdit />} onClick={() => handleEdit(record)} />
+          <Button type="primary" icon={<AiOutlineEdit />} onClick={() => handleEdit(record)} />
           <Popconfirm title="Chắc chắn xóa?" onConfirm={() => handleDelete(record)}>
-            <Button type="primary" danger icon={<icon.AiOutlineDelete />} />
+            <Button type="primary" danger icon={<AiOutlineDelete />} />
           </Popconfirm>
         </Space>
       ),

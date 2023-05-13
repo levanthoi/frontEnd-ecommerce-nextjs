@@ -32,9 +32,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const res: AxiosResponse<any> = await getAttribute(query);
   const { data } = res;
 
-  const paths = data?.data?.map((category: IAttribute) => ({
+  const paths = data?.data?.map((attr: IAttribute) => ({
     params: {
-      id: category.key.toString(),
+      id: attr?.key?.toString(),
     },
   }));
   return {

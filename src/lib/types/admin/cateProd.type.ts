@@ -1,7 +1,7 @@
 import React from 'react';
 
 export interface ICateProd {
-  _id?: React.Key;
+  _id?: string;
   key?: React.Key;
   name: string;
   status?: boolean;

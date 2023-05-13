@@ -2,7 +2,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 const http = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_SERVER_V2 || 'http://localhost:5000',
+  baseURL: process.env.NEXT_PUBLIC_API_SERVER_V1 || 'http://localhost:5000',
   timeout: 3000,
 });
 

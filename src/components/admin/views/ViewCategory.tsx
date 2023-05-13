@@ -10,6 +10,7 @@ import {
   Typography,
   // Select,
   TreeSelect,
+  Image,
 } from 'antd';
 import { UploadProps } from 'antd/es/upload';
 import type { UploadFile } from 'antd/es/upload/interface';
@@ -44,7 +45,7 @@ const ViewCategory: React.FC<Props> = ({ row }) => {
   console.log('cate', categories);
 
   const [status, setStatus] = useState<boolean>(true);
-  const [image, setImage] = useState<any>(row?.image || {});
+  const [image, setImage] = useState<any | {}>(row?.image);
 
   useEffect(() => {
     console.log('row', row);
@@ -58,19 +59,20 @@ const ViewCategory: React.FC<Props> = ({ row }) => {
   const handleChangeUpload: UploadProps['onChange'] = async ({ file }) => {
     console.log(file);
 
+    const { response } = file;
     if (file?.status === 'done') {
       console.log('as', file);
       // const { file } = info;
-      const { response } = file;
       // const {secure_url, public_id} = info.file.response.image;
       setImage({
         url: response?.image?.secure_url,
         uid: response?.image?.public_id,
       });
-    } else if (file?.status === 'removed') {
-      const res = await deleteImageCateProd(file?.uid);
+    }
+    if (file?.status === 'removed') {
+      const res = await deleteImageCateProd(response?.image?.public_id);
       if (res?.data?.success) {
-        setImage(null);
+        setImage({});
       }
     }
   };
@@ -156,14 +158,15 @@ const ViewCategory: React.FC<Props> = ({ row }) => {
         </Item> */}
         <Item name="image" label={t.image} valuePropName="file">
           <Upload
-            action="http://localhost:5000/api/v1/prodCate/upload"
+            method="PUT"
+            action={`http://localhost:5000/api/v1/prodCate/upload/${image?.uid}`}
             // onRemove={handleRemoveImage}
             // showUploadList={row ? true : false}
             headers={{
               authorization: `Bearer ${getUser()?.token}`,
             }}
             name="image"
-            fileList={[image] || []}
+            // fileList={image ? [image] : []}
             listType="picture"
             maxCount={1}
             onChange={handleChangeUpload}
@@ -171,6 +174,7 @@ const ViewCategory: React.FC<Props> = ({ row }) => {
             <Button icon={<AiOutlineUpload />}>Upload (Max: 1)</Button>
           </Upload>
         </Item>
+        {image && <Image src={image.url} alt={image.uid} />}
         <Item name="slug">
           <Typography>
             <pre>
