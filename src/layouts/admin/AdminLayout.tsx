@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Layout, Menu, theme } from 'antd';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -19,8 +19,14 @@ import {
   TbUsers,
 } from 'react-icons/tb';
 //
+// import Cookies from 'js-cookie';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/reducers/rootReducer';
 import { useLanguage } from '@/hooks/useLanguage';
 
+// const Login = dynamic(() => import('@/pages/admin/login'), {
+//   ssr: false,
+// });
 const BreadCrumb = dynamic(() => import('@/components/UI/breadcrumb'), {
   ssr: false,
 });
@@ -144,6 +150,14 @@ const AdminLayout: React.FC<Props> = ({ children }) => {
   const router = useRouter();
   const { t } = useLanguage();
 
+  const { data, message } = useSelector((state: RootState) => state?.auth);
+  // const [data, setdata] = useState<boolean>(a || false);
+
+  // console.log('data', data);
+  useEffect(() => {
+    if (!data) router.push('/admin/login');
+  }, [data, router, message]);
+
   const handleClick = () => {
     setCollapsed(!collapsed);
   };
@@ -183,7 +197,7 @@ const AdminLayout: React.FC<Props> = ({ children }) => {
   const end = performance.now();
   console.log('time', end - start);
 
-  return (
+  return data ? (
     <React.Fragment>
       <Head>
         {' '}
@@ -218,7 +232,7 @@ const AdminLayout: React.FC<Props> = ({ children }) => {
         </Layout>
       </Layout>
     </React.Fragment>
-  );
+  ) : null;
 };
 
 export default AdminLayout;
