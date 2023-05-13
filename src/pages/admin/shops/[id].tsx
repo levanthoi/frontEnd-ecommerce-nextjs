@@ -27,14 +27,14 @@ const Edit: NextPage<{ row: IShop }> = ({ row }) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const query = {
-    fields: 'key',
+    fields: '_id',
   };
   const res: AxiosResponse<any> = await getShop(query);
   const { data } = res;
 
   const paths = data?.data?.map((item: IShop) => ({
     params: {
-      id: item._id.toString(),
+      id: item?._id?.toString(),
     },
   }));
   return {

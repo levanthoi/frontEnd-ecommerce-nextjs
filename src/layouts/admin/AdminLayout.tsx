@@ -1,11 +1,24 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Layout, Menu, theme } from 'antd';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import type { MenuProps } from 'antd';
 import dynamic from 'next/dynamic';
-import * as icon from '@/icons';
+// icon
+import { SiBrandfolder, SiFlattr } from 'react-icons/si';
+import { GrUserManager } from 'react-icons/gr';
+import {
+  TbLayoutDashboard,
+  TbShoppingCart,
+  TbCategory,
+  TbBrandProducthunt,
+  TbBlockquote,
+  TbBrandBlogger,
+  TbReplace,
+  TbUsers,
+} from 'react-icons/tb';
+//
 import { useLanguage } from '@/hooks/useLanguage';
 
 const BreadCrumb = dynamic(() => import('@/components/UI/breadcrumb'), {
@@ -19,13 +32,16 @@ interface Props {
   children: React.ReactNode;
 }
 
+// const itemsMenu: any[] = [];
+const start = performance.now();
+
 const itemMenu = [
   {
     key: 'dashboard',
     label: 'dashboard',
     type: '',
     children: null,
-    icon: <icon.TbLayoutDashboard />,
+    icon: <TbLayoutDashboard />,
   },
   {
     key: 'manageProduct',
@@ -35,32 +51,32 @@ const itemMenu = [
       {
         key: 'shops',
         label: 'shops',
-        icon: <icon.AiOutlineShop />,
+        icon: <TbShoppingCart />,
       },
       {
         key: 'cateProd',
         label: 'categories',
-        icon: <icon.VscSymbolMisc />,
+        icon: <TbCategory />,
       },
       {
         key: 'brands',
         label: 'brands',
-        icon: <icon.SiBrandfolder />,
+        icon: <SiBrandfolder />,
       },
       {
         key: 'attributes',
         label: 'attributes',
-        icon: <icon.MdAttribution />,
+        icon: <SiFlattr />,
       },
       {
         key: 'products',
         label: 'products',
-        icon: <icon.MdOutlineProductionQuantityLimits />,
+        icon: <TbBrandProducthunt />,
       },
       {
         key: 'orders',
         label: 'orders',
-        icon: <icon.BiReceipt />,
+        icon: <TbReplace />,
       },
     ],
     icon: null,
@@ -73,12 +89,12 @@ const itemMenu = [
       {
         key: 'cateBlog',
         label: 'categories',
-        icon: <icon.VscSymbolMisc />,
+        icon: <TbBrandBlogger />,
       },
       {
         key: 'blogs',
         label: 'blogs',
-        icon: <icon.BsNewspaper />,
+        icon: <TbBlockquote />,
       },
     ],
     icon: null,
@@ -91,7 +107,7 @@ const itemMenu = [
       {
         key: 'customers',
         label: 'customers',
-        icon: <icon.FiUsers />,
+        icon: <TbUsers />,
       },
     ],
     icon: null,
@@ -104,7 +120,7 @@ const itemMenu = [
       {
         key: 'employees',
         label: 'employees',
-        icon: <icon.GrUserManager />,
+        icon: <GrUserManager />,
       },
     ],
     icon: null,
@@ -132,43 +148,50 @@ const AdminLayout: React.FC<Props> = ({ children }) => {
     setCollapsed(!collapsed);
   };
   // const title = router.asPath?.split('/admin/')?.slice(1)[0];
-  const path = router.asPath?.split('/admin/')?.slice(1)[0];
+  const path = useMemo(() => {
+    return router.asPath?.split('/admin/')?.slice(1)[0];
+  }, [router.asPath]);
+
   const handleClickMenu: MenuProps['onClick'] = (e) => {
     console.log(e);
     if (path !== e.key) {
       router.push(`/admin/${e.key}`);
     }
   };
+  console.log(performance.now());
 
-  const itemsMenu = itemMenu?.map((item) => {
-    return {
-      ...item,
-      label: t[`${item.label}`],
-      children: item?.children?.map((child) => {
-        return {
-          ...child,
-          label: t[`${child.label}`],
-          // children: child?.children?.map((childTwo) => {
-          //   return {
-          //     ...childTwo,
-          //     label: t[`${childTwo.label}`],
-          //   };
-          // }),
-        };
-      }),
-    };
-  });
-  // console.log('item', itemsMenu);
+  const itemsMenu = useMemo(() => {
+    return itemMenu?.map((item) => {
+      return {
+        ...item,
+        label: t[`${item?.label}`],
+        children: item?.children?.map((child) => {
+          return {
+            ...child,
+            label: t[`${child?.label}`],
+            // children: child?.children?.map((childTwo) => {
+            //   return {
+            //     ...childTwo,
+            //     label: t[`${childTwo.label}`],
+            //   };
+            // }),
+          };
+        }),
+      };
+    });
+  }, [t]);
+  const end = performance.now();
+  console.log('time', end - start);
 
   return (
     <React.Fragment>
       <Head>
+        {' '}
         <title>{t[`${path}`]}</title>
       </Head>
       <Layout>
         <Sider theme="light" trigger={null} collapsible collapsed={collapsed}>
           <div className="w-full max-h-full">
-            {/* LOGO. */}
             <Image width={100} height={30} src="/images/logo.png" alt="logo" priority />
           </div>
           <Menu

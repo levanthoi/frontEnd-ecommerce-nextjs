@@ -20,7 +20,7 @@ const Login: React.FC = () => {
   // console.log('data', data);
   useEffect(() => {
     console.log('data useEffect', data);
-    router.prefetch('/admin/dashboard');
+    // router.prefetch('/admin/dashboard');
     if (data) {
       Cookies.set('data', JSON.stringify(data));
       router.push('/admin/dashboard');

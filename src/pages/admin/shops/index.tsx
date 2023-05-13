@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import type { NextPage } from 'next';
 import { AxiosResponse } from 'axios';
-import { GetStaticProps } from 'next';
+// import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 
 // antd
@@ -20,15 +20,30 @@ const NavTab = dynamic(() => import('@/components/admin/navTab/NavTab'), {
   ssr: false,
 });
 
-interface Props {
-  data: IShop[];
-}
+// interface Props {
+//   data: IShop[];
+// }
 
-const Shops: NextPage<Props> = ({ data }) => {
+const Shops: NextPage = () => {
   const { t } = useLanguage();
   const router = useRouter();
 
-  const [dataShop, setDataShop] = useState<Array<IShop> | []>(data || []);
+  const [dataShop, setDataShop] = useState<Array<IShop> | []>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const fetch = useCallback(async () => {
+    const query = {
+      fields: '',
+    };
+    setIsLoading(true);
+    const res: AxiosResponse<any> = await getShop(query);
+    setDataShop(res?.data?.data);
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
 
   const handleDelete = async (record: IShop) => {
     console.log('record', record);
@@ -110,21 +125,27 @@ const Shops: NextPage<Props> = ({ data }) => {
 
   return (
     <>
-      <NavTab />
-      <Table columns={columns} dataSource={dataShop} rowKey="_id" onChange={onChange} />
+      <NavTab fetchList={fetch} />
+      <Table
+        columns={columns}
+        dataSource={dataShop}
+        loading={isLoading}
+        rowKey="_id"
+        onChange={onChange}
+      />
     </>
   );
 };
 
 export default Shops;
 
-export const getStaticProps: GetStaticProps = async () => {
-  const query = {
-    fields: '',
-  };
-  const res: AxiosResponse<any> = await getShop(query);
-  const { data } = res;
-  return {
-    props: { data: data.data }, // will be passed to the page component as props
-  };
-};
+// export const getStaticProps: GetStaticProps = async () => {
+//   const query = {
+//     fields: '',
+//   };
+//   const res: AxiosResponse<any> = await getShop(query);
+//   const { data } = res;
+//   return {
+//     props: { data: data.data }, // will be passed to the page component as props
+//   };
+// };

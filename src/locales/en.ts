@@ -23,6 +23,7 @@ const en: { [key: string]: string } = {
   requiredEmail: 'The input is not valid E-mail!',
   requiredPassword: 'Please input your Password!',
   login: 'Log in',
+  showAll: 'show All',
 
   // admin
   revenues: 'Revenues',

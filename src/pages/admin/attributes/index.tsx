@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import type { NextPage } from 'next';
 import { AxiosResponse } from 'axios';
@@ -20,24 +20,40 @@ const NavTab = dynamic(() => import('@/components/admin/navTab/NavTab'), {
   ssr: false,
 });
 
-interface Props {
-  data: IAttribute[];
-}
+// interface Props {
+//   data: IAttribute[];
+// }
 
-const Attributes: NextPage<Props> = ({ data }) => {
+const Attributes: NextPage = () => {
   const { t } = useLanguage();
   const router = useRouter();
 
-  const [dataAttribute, setDataAttribute] = useState<Array<IAttribute> | []>(data || []);
+  const [dataAttribute, setDataAttribute] = useState<Array<IAttribute> | []>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const fetch = useCallback(async () => {
+    const query = {
+      fields: '',
+    };
+    setIsLoading(true);
+    const res: AxiosResponse<any> = await getAttribute(query);
+    setDataAttribute(res?.data?.data);
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
 
   const handleDelete = async (record: IAttribute) => {
     console.log('record', record);
     try {
       const res: AxiosResponse<any> = await deleteAttribute(record.key);
       const { message, success } = res.data;
-      const afterDelete = dataAttribute?.filter((attribute) => attribute.key !== record.key);
-      setDataAttribute(afterDelete);
+      // const afterDelete = dataAttribute?.filter((attribute) => attribute.key !== record.key);
+      // setDataAttribute(afterDelete);
       Notification(message, success);
+      fetch();
     } catch (e: any) {
       const { message, success } = e.data;
       Notification(message, success);
@@ -111,21 +127,27 @@ const Attributes: NextPage<Props> = ({ data }) => {
 
   return (
     <>
-      <NavTab />
-      <Table columns={columns} dataSource={dataAttribute} onChange={onChange} />
+      <NavTab fetchList={fetch} />
+      <Table
+        columns={columns}
+        dataSource={dataAttribute}
+        loading={isLoading}
+        rowKey="_id"
+        onChange={onChange}
+      />
     </>
   );
 };
 
 export default Attributes;
 
-export const getStaticProps: GetStaticProps = async () => {
-  const query = {
-    fields: '',
-  };
-  const res: AxiosResponse<any> = await getAttribute(query);
-  const { data } = res;
-  return {
-    props: { data: data.data }, // will be passed to the page component as props
-  };
-};
+// export const getStaticProps: GetStaticProps = async () => {
+//   const query = {
+//     fields: '',
+//   };
+//   const res: AxiosResponse<any> = await getAttribute(query);
+//   const { data } = res;
+//   return {
+//     props: { data: data.data }, // will be passed to the page component as props
+//   };
+// };
