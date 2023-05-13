@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
 import { MdLanguage } from 'react-icons/md';
 import { useLanguage } from '@/hooks/useLanguage';
-import LanguageItem from '@/components/UI/language/LanguageItem';
+// import LanguageItem from '@/components/UI/language/LanguageItem';
+
+const LanguageItem = dynamic(() => import('@/components/UI/language/LanguageItem'), {
+  ssr: false,
+});
 
 interface Props {
   classname?: string;
@@ -10,7 +15,7 @@ interface Props {
 const Language: React.FC<Props> = ({ classname }) => {
   const { locale } = useLanguage();
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const onClose = (open: boolean) => {
     setIsOpen(open);

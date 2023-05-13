@@ -1,10 +1,25 @@
 import { Layout } from 'antd';
+import dynamic from 'next/dynamic';
 import React from 'react';
-import * as icon from '@/icons';
-import SearchBar from '@/components/UI/SearchBar';
-import Language from '@/components/UI/language';
-import Bell from '@/components/UI/header/bell';
-import Account from '@/components/UI/header/account';
+import { AiOutlineMenuUnfold, AiOutlineMenuFold } from 'react-icons/ai';
+// import * as icon from '@/icons';
+// import SearchBar from '@/components/UI/SearchBar';
+// import Language from '@/components/UI/language';
+// import Bell from '@/components/UI/header/bell';
+// import Account from '@/components/UI/header/account';
+
+const SearchBar = dynamic(() => import('@/components/UI/SearchBar'), {
+  ssr: false,
+});
+const Language = dynamic(() => import('@/components/UI/language'), {
+  ssr: false,
+});
+const Bell = dynamic(() => import('@/components/UI/header/bell'), {
+  ssr: false,
+});
+const Account = dynamic(() => import('@/components/UI/header/account'), {
+  ssr: false,
+});
 
 interface Props {
   collapsed: boolean;
@@ -20,7 +35,7 @@ const Header: React.FC<Props> = ({ colorText, bg, collapsed, handleClick }) => {
       className="flex items-center justify-between"
     >
       <div className="trigger" onClick={handleClick}>
-        {collapsed ? <icon.AiOutlineMenuUnfold /> : <icon.AiOutlineMenuFold />}
+        {collapsed ? <AiOutlineMenuUnfold /> : <AiOutlineMenuFold />}
       </div>
       <div className="w-[50%]">
         <SearchBar />

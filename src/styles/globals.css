@@ -147,4 +147,7 @@ input {
   display: flex;
 }
 
+:where(.css-dev-only-do-not-override-mxhywb).ant-checkbox-wrapper + .ant-checkbox-wrapper {
+  margin-inline-start: 0;
+}
 /* @import '/src/styles/sourceediting.css'; */

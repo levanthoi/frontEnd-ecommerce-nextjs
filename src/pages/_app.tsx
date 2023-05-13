@@ -8,6 +8,8 @@ import NextNProgress from 'nextjs-progressbar';
 import '@/styles/reset.css';
 import '@/styles/globals.css';
 import store from '@/redux/store';
+// import AdminLayout from '@/layouts/admin/AdminLayout';
+// import WebLayout from '@/layouts/user/webLayout';
 
 const WebLayout = dynamic(() => import('@/layouts/user/webLayout'), {
   ssr: false,

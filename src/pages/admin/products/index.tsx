@@ -8,10 +8,10 @@ import type { ColumnsType, TableProps } from 'antd/es/table';
 import { Button, Popconfirm, Space, Switch, Table } from 'antd';
 import { AxiosResponse } from 'axios';
 // icon
-import * as icon from '@/icons';
+import { AiOutlineClose, AiOutlineCheck, AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
 // other
 import { useLanguage } from '@/hooks/useLanguage';
-import { deleteProduct, getProduct } from '@/services/product.service';
+import { deleteProduct, exportProduct, getProduct } from '@/services/product.service';
 import { IProduct } from '@/lib/types/admin/products/product.type';
 import { Notification } from '@/components/UI/Notification';
 
@@ -27,49 +27,13 @@ const Products: NextPage = () => {
   const { t } = useLanguage();
   const router = useRouter();
 
-  const [data, setData] = useState<IProduct[] | []>([]);
-
-  const fetch = useCallback(async () => {
-    const query = {
-      fields: '',
-    };
-    const res: AxiosResponse<any> = await getProduct(query);
-    setData(res?.data?.data);
-  }, []);
-
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-  const handleDelete = async (record: IProduct) => {
-    console.log('record', record);
-    try {
-      const res: AxiosResponse<any> = await deleteProduct(record._id);
-      const { message, success } = res.data;
-      fetch();
-      // const afterDelete = dataProduct?.filter((cateProd) => cateProd.key !== record.key);
-      // setDataProduct(afterDelete);
-      Notification(message, success);
-    } catch (e: any) {
-      const { message, success } = e.data;
-      Notification(message, success);
-    }
-  };
-  /**
-   * @description  : Edit a Row Table
-   * @param record : IProduct
-   */
-  const handleEdit = async (record: IProduct) => {
-    // console.log('record', record);
-    router.push(`${router.asPath}/${record._id}`);
-  };
-
   /**
    * @description : Khởi tạo Column
    */
-  const columns: ColumnsType<IProduct> = [
+  const initColumns: ColumnsType<IProduct> = [
     {
       title: 'ID',
-      dataIndex: '',
+      dataIndex: '_id',
       // width: '10%',
       render: (text, _, index) => index + 1,
     },
@@ -99,8 +63,8 @@ const Products: NextPage = () => {
       // width: '15%',
     },
     {
-      title: t.price,
-      dataIndex: 'price',
+      title: t.unitPrice,
+      dataIndex: 'unitPrice',
       // width: '15%',
     },
     {
@@ -109,8 +73,8 @@ const Products: NextPage = () => {
       // width: '10%',
       render: (text) => (
         <Switch
-          checkedChildren={<icon.AiOutlineCheck />}
-          unCheckedChildren={<icon.AiOutlineClose />}
+          checkedChildren={<AiOutlineCheck />}
+          unCheckedChildren={<AiOutlineClose />}
           checked={text}
         />
       ),
@@ -121,36 +85,105 @@ const Products: NextPage = () => {
       // width: '10%',
       render: (_, record) => (
         <Space wrap>
-          <Button type="primary" icon={<icon.AiOutlineEdit />} onClick={() => handleEdit(record)} />
+          <Button type="primary" icon={<AiOutlineEdit />} onClick={() => handleEdit(record)} />
           <Popconfirm title="Chắc chắn xóa?" onConfirm={() => handleDelete(record)}>
-            <Button type="primary" danger icon={<icon.AiOutlineDelete />} />
+            <Button type="primary" danger icon={<AiOutlineDelete />} />
           </Popconfirm>
         </Space>
       ),
     },
   ];
 
+  const [data, setData] = useState<IProduct[] | []>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [columns, setColumns] = useState<any>(initColumns);
+
+  const fetch = useCallback(async () => {
+    try {
+      const query = {
+        fields: '',
+      };
+      setIsLoading(true);
+      const res: AxiosResponse<any> = await getProduct(query);
+      setData(res?.data?.data || []);
+      setIsLoading(false);
+    } catch (e: any) {
+      console.log(e);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
+  const handleDelete = async (record: IProduct) => {
+    console.log('record', record);
+    try {
+      const res: AxiosResponse<any> = await deleteProduct(record._id);
+      const { message, success } = res.data;
+      // const afterDelete = dataProduct?.filter((cateProd) => cateProd.key !== record.key);
+      // setDataProduct(afterDelete);
+      Notification(message, success);
+      fetch();
+    } catch (e: any) {
+      const { message, success } = e.data;
+      Notification(message, success);
+    }
+  };
+  /**
+   * @description  : Edit a Row Table
+   * @param record : IProduct
+   */
+  const handleEdit = async (record: IProduct) => {
+    // console.log('record', record);
+    router.push(`${router.asPath}/${record._id}`);
+  };
+
   const onChange: TableProps<IProduct>['onChange'] = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
   };
 
+  const onExportExcel = async () => {
+    try {
+      // const headerName = columns?.map((column: any) => column?.title)?.pop();
+      const params = {
+        columns: columns?.slice(0, -1),
+      };
+      const res = await exportProduct(params);
+      const { message, success } = res.data;
+      Notification(message, success);
+      console.log('res', res);
+    } catch (e: any) {
+      Notification(e?.data?.message, e?.data?.success);
+    }
+  };
+
+  const handleAddColumn = (params: any) => {
+    // console.log('asadsasas', params);
+    // console.log('columns', columns);
+    const filteredColumns = initColumns?.filter((column: any) => {
+      return params?.includes(column?.title);
+    });
+    // console.log('filteredColumns', filteredColumns);
+    setColumns(filteredColumns);
+  };
+
   return (
     <>
-      <NavTab />
-      <Table columns={columns} dataSource={data} onChange={onChange} />
+      <NavTab
+        fetchList={fetch}
+        onExport={onExportExcel}
+        columns={initColumns}
+        handleAddColumn={handleAddColumn}
+      />
+      <Table
+        columns={columns}
+        dataSource={data}
+        loading={isLoading}
+        rowKey="_id"
+        onChange={onChange}
+      />
     </>
   );
 };
 
 export default Products;
-
-// export const getStaticProps: GetStaticProps = async () => {
-//   const query = {
-//     fields: '',
-//   };
-//   const res: AxiosResponse<any> = await getProduct(query);
-//   const { data } = res;
-//   return {
-//     props: { data: data.data }, // will be passed to the page component as props
-//   };
-// };

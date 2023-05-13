@@ -2,7 +2,8 @@ import { Button, Card, Col, Row } from 'antd';
 import Link from 'next/link';
 import React from 'react';
 import { IconType } from 'react-icons';
-import * as icon from '@/icons';
+// icon
+import { AiOutlineArrowRight } from 'react-icons/ai';
 import { useLanguage } from '@/hooks/useLanguage';
 
 interface Props {
@@ -25,7 +26,7 @@ const StatisticBox: React.FC<Props> = ({ color, bg, Icon, val, title }) => {
             <Link href={`/admin/${title}`} className="group-hover:italic duration-200">
               {t.seeAll}
               <span>
-                <icon.AiOutlineArrowRight className="opacity-0 group-hover:opacity-100 duration-200" />
+                <AiOutlineArrowRight className="opacity-0 group-hover:opacity-100 duration-200" />
               </span>
             </Link>
           </Col>
