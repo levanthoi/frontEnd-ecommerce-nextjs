@@ -5,8 +5,8 @@ import { useRouter } from 'next/router';
 // axios
 import { AxiosResponse } from 'axios';
 //
+import { AiOutlinePlus, AiOutlineClose } from 'react-icons/ai';
 import { useLanguage } from '@/hooks/useLanguage';
-import * as icon from '@/icons';
 import { createAttribute, updateAttribute } from '@/services/attribute.service';
 import { Notification } from '@/components/UI/Notification';
 import { IAttribute } from '@/lib/types/admin/attributes/attribute.type';
@@ -119,7 +119,7 @@ const ViewAttribute: React.FC<Props> = ({ row }) => {
                             <Input />
                           </Item>
                           <Item>
-                            <icon.AiOutlineClose
+                            <AiOutlineClose
                               onClick={() => remove(name)}
                               className="mt-8 cursor-pointer"
                             />
@@ -129,7 +129,7 @@ const ViewAttribute: React.FC<Props> = ({ row }) => {
                     );
                   })}
                   <Item>
-                    <Button type="dashed" onClick={() => add()} block icon={<icon.AiOutlinePlus />}>
+                    <Button type="dashed" onClick={() => add()} block icon={<AiOutlinePlus />}>
                       Add sights
                     </Button>
                   </Item>

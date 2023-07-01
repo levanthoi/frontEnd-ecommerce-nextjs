@@ -150,4 +150,10 @@ input {
 :where(.css-dev-only-do-not-override-mxhywb).ant-checkbox-wrapper + .ant-checkbox-wrapper {
   margin-inline-start: 0;
 }
+
+.ant-upload-list-item-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 /* @import '/src/styles/sourceediting.css'; */

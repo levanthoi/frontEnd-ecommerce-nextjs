@@ -137,9 +137,8 @@ const Categories: React.FC = () => {
   const columns: ColumnsType<ICateProd> = [
     {
       title: 'ID',
-      dataIndex: 'key',
-      width: '25%',
-      render: (text, _, index) => text,
+      width: '5%',
+      render: (text, _, index) => index + 1,
     },
     {
       title: t.image,

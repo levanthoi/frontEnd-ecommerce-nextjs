@@ -16,6 +16,8 @@ import {
   Space,
   Table,
   UploadFile,
+  Image,
+  UploadProps,
 } from 'antd';
 import type { ColumnsType, TableProps } from 'antd/es/table';
 // import { useDispatch } from 'react-redux';
@@ -24,9 +26,9 @@ import dynamic from 'next/dynamic';
 // axios
 import { AxiosResponse } from 'axios';
 //
+import { AiOutlinePlus, AiOutlineClose } from 'react-icons/ai';
+//
 import { useLanguage } from '@/hooks/useLanguage';
-import * as icon from '@/icons';
-import { createCateProd, updateCateProd } from '@/services/cateProd.service';
 import { Notification } from '@/components/UI/Notification';
 import { useGetCateProd } from '@/hooks/useGetCateProd';
 import { useGetBrands } from '@/hooks/useGetBrands';
@@ -37,8 +39,15 @@ import { getActiveShop, getShop } from '@/services/shop.service';
 import { getActiveBrand } from '@/services/brand.service';
 import { IShop } from '@/lib/types/admin/shops/shop.type';
 import { IBrand } from '@/lib/types/admin/brands/brand.type';
-import { createProduct, updateProduct } from '@/services/product.service';
+import {
+  createProduct,
+  deleteImageProduct,
+  updateProduct,
+  uploadProduct,
+} from '@/services/product.service';
 import { IProduct } from '@/lib/types/admin/products/product.type';
+import { getUser } from '@/utils/getToken';
+import { baseUrl } from '@/utils/baseUrl';
 
 // import MyCKEditor from '../CKEditor';
 // import { RootState } from '@/redux/reducers/rootReducer';
@@ -50,6 +59,11 @@ interface Props {
 }
 
 interface IVariant {
+  image?: {
+    uid: string;
+    url?: string;
+    name: string;
+  };
   variant: string;
   variantPrice: number;
   sku: string;
@@ -74,11 +88,15 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
   const [shops, setShops] = useState<IShop[] | []>([]);
   const [brands, setBrands] = useState<IBrand[] | []>([]);
 
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  // const [fileList, setFileList] = useState<UploadFile[]>([]);
   // const [editorLoaded, setEditorLoaded] = useState<boolean>(false);
   // const [desc, setDesc] = useState<string>('');
   const { categories } = useGetCateProd();
   const { attributes } = useGetAttributes();
+
+  // images
+  const [thumb, setThumb] = useState<any | {}>(row?.images);
+  // const [images, setImages] = useState<string[]>([]);
 
   const fetch = useCallback(async () => {
     const query = {
@@ -97,7 +115,7 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
   }, [fetch]);
 
   useEffect(() => {
-    console.log('row', row);
+    // console.log('row', row);
 
     if (row) {
       form.setFieldsValue(row);
@@ -106,8 +124,6 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
   }, [form, row]);
 
   const valVariant = useMemo(() => {
-    console.log('useMemo ValVariant');
-
     const valObj: { [key: string]: string[] } = {};
     attributes?.forEach(({ title, variants }) => {
       valObj[title] = variants?.map(({ name }) => name);
@@ -116,7 +132,6 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
   }, [attributes]);
 
   useEffect(() => {
-    console.log('useEffect ValVariant');
     setAttrVal(valVariant);
   }, [valVariant]);
 
@@ -132,6 +147,11 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
     const valVariants = variants?.map((variant: any) => variant.value);
     const cartesians = cartesianProduct(valVariants);
     const combinations = cartesians?.map((item: any) => ({
+      // image: {
+      //   uid: "",
+      //   url:"",
+      //   name: ""
+      // },
       variant: item?.join('-'),
       variantPrice: unitPrice,
       sku: `-${item?.join('-')}`,
@@ -142,10 +162,9 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
 
   const handleChangeUnitPrice = () => {
     const unitPrice = form.getFieldValue('unitPrice');
-    console.log('val', unitPrice);
     const update = dataSource?.map((item) => ({ ...item, variantPrice: unitPrice }));
     setDataSource(update);
-    console.log('dataSource', dataSource);
+    // console.log('dataSource', dataSource);
   };
 
   const handleChangeDetail = (
@@ -156,7 +175,7 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
     const update: IVariant[] = dataSource?.map((item: IVariant) =>
       item?.sku === record?.sku ? { ...item, [text]: Number(e.target.value) } : item,
     );
-    console.log('update', update);
+    // console.log('update', update);
     setDataSource(update);
   };
 
@@ -165,7 +184,7 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
    * @param value : IShop
    */
   const handleSubmit = async (value: IShop) => {
-    const addItem = { ...value, details: dataSource, status };
+    const addItem = { ...value, details: dataSource, status, images: thumb };
     console.log('addItem', addItem);
 
     let res: AxiosResponse<any>;
@@ -188,6 +207,31 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
     }
   };
 
+  /**
+   *
+   * @param params
+   * @returns
+   */
+  const handleChangeUpload: UploadProps['onChange'] = async ({ file }) => {
+    // console.log('file upload', file);
+    const { response } = file;
+    if (file?.status === 'done') {
+      console.log('as', file);
+      setThumb({
+        url: response?.image?.secure_url,
+        uid: response?.image?.public_id,
+      });
+    }
+    if (file?.status === 'removed') {
+      console.log('removed', response);
+
+      const res = await deleteImageProduct(response?.image?.public_id || file.uid);
+      if (res?.data?.success) {
+        setThumb({});
+      }
+    }
+  };
+
   const titleCard = (params: string) => {
     return (
       <Space>
@@ -197,7 +241,62 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
     );
   };
 
+  const onChangeVariants = async ({ file }: { file: any }, record: any) => {
+    // console.log('fileslistsss', fileList);
+    // console.log('fileeee', file);
+    // console.log('record', record);
+    if (file?.response?.success) {
+      const newDataSource = dataSource?.map((item: IVariant) => {
+        const newItem = { ...item };
+        if (item?.sku === record?.sku) {
+          const { public_id: uid, secure_url: url, signature: name } = file?.response?.image || {};
+          newItem.image = {
+            uid,
+            url,
+            name,
+          };
+        }
+        return newItem;
+      });
+      setDataSource(newDataSource);
+    }
+
+    if (file?.status === 'removed') {
+      const { uid } = file?.response?.image || file;
+      if (uid) {
+        const res = await deleteImageProduct(uid);
+        console.log('res', res);
+      }
+    }
+  };
+  // const onRemoveVariants: UploadProps['onRemove'] = async (file) => {
+  //   console.log('remove', file);
+  // };
+
   const columns: ColumnsType<IVariant> = [
+    {
+      title: t.image,
+      dataIndex: 'image',
+      // width: 25,
+      render: (text, record) => (
+        <Upload
+          listType="picture-card"
+          defaultFileList={
+            record?.image?.uid ? ([{ ...record?.image }] as UploadFile<IVariant>[]) : []
+          }
+          action={`${baseUrl}/v1/product/upload`}
+          headers={{
+            authorization: `Bearer ${getUser()?.token}`,
+          }}
+          name="image"
+          maxCount={1}
+          onChange={(info) => onChangeVariants(info, record)}
+          // onRemove={onRemoveVariants}
+        >
+          {uploadButton}
+        </Upload>
+      ),
+    },
     {
       title: t.variant,
       dataIndex: 'variant',
@@ -228,7 +327,7 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
 
   const uploadButton = (
     <div>
-      <icon.AiOutlinePlus />
+      <AiOutlinePlus />
       <div style={{ marginTop: 8 }}>Upload</div>
     </div>
   );
@@ -294,10 +393,10 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
   //   brands: brands[0]?._id || '',
   //   unit: units[0]?.label || '',
   // };
-  console.log('pre-render ViewProduct 198', nameVariant);
-  console.log('pre-render attrVal', attrVal);
-  console.log('pre-render attrVar', attrVar);
-  console.log('pre-render variant', form.getFieldValue('variant'));
+  // console.log('pre-render ViewProduct 198', nameVariant);
+  // console.log('pre-render attrVal', attrVal);
+  // console.log('pre-render attrVar', attrVar);
+  // console.log('pre-render variant', form.getFieldValue('variant'));
 
   return (
     <Form
@@ -411,13 +510,13 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
                       </Col>
                       <Col span={2}>
                         <Item>
-                          <icon.AiOutlineClose onClick={() => remove(name)} />
+                          <AiOutlineClose onClick={() => remove(name)} />
                         </Item>
                       </Col>
                     </Row>
                   ))}
                   <Item>
-                    <Button type="dashed" onClick={() => add()} block icon={<icon.AiOutlinePlus />}>
+                    <Button type="dashed" onClick={() => add()} block icon={<AiOutlinePlus />}>
                       Add field
                     </Button>
                   </Item>
@@ -428,10 +527,21 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
         </Col>
         <Col span={6}>
           <Card title={titleCard('image')}>
-            <Item name="images">
-              <Upload listType="picture-card" fileList={fileList}>
-                {fileList.length >= 1 ? null : uploadButton}
+            <Item valuePropName="file">
+              <Upload
+                listType="picture-card"
+                defaultFileList={row?.images?.uid ? [{ ...row?.images }] : []}
+                action={`${baseUrl}/v1/product/upload`}
+                headers={{
+                  authorization: `Bearer ${getUser()?.token}`,
+                }}
+                name="image"
+                maxCount={1}
+                onChange={handleChangeUpload}
+              >
+                {uploadButton}
               </Upload>
+              {/* {row && <Image src={thumb?.url || ''} alt="anh" />} */}
             </Item>
           </Card>
         </Col>
@@ -458,7 +568,11 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
                   <Input addonAfter={taxAfter} />
                 </Item>
               </Col>
+              {/* <Col>
+                <Card title="as">as</Card>
+              </Col> */}
             </Row>
+
             <Row>
               <Col span={24}>
                 <Table columns={columns} dataSource={dataSource} rowKey="sku" />

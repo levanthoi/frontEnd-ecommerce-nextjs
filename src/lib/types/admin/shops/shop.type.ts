@@ -5,7 +5,7 @@ export interface IShop {
     title?: string;
     phone?: string;
     email?: string;
-    avatar?: string;
+    avatar?: any;
     is_owner?: string;
   };
   shop: {
