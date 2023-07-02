@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Form, Input, Switch, Upload } from 'antd';
-import { RcFile } from 'antd/es/upload';
+import { RcFile, UploadProps } from 'antd/es/upload';
 // import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 // axios
 import { AxiosResponse } from 'axios';
 //
+import { AiOutlinePlus } from 'react-icons/ai';
 import { useLanguage } from '@/hooks/useLanguage';
-import * as icon from '@/icons';
-import { createBrand, updateBrand } from '@/services/brand.service';
+import { createBrand, deleteFileBrand, updateBrand } from '@/services/brand.service';
 import { Notification } from '@/components/UI/Notification';
 import { IBrand } from '@/lib/types/admin/brands/brand.type';
 import { getBase64 } from '@/utils/helpers';
+import { baseUrl } from '@/utils/baseUrl';
+import { getUser } from '@/utils/getToken';
 
 // import MyCKEditor from '../CKEditor';
 // import { RootState } from '@/redux/reducers/rootReducer';
@@ -30,7 +32,7 @@ const ViewBrand: React.FC<Props> = ({ row }) => {
   const { Item } = Form;
 
   const [status, setStatus] = useState<boolean>(true);
-  const [image, setImage] = useState<string>('');
+  const [image, setImage] = useState<any>(null);
   // const [fileList, setFileList] = useState<UploadFile[]>([]);
   // const [editorLoaded, setEditorLoaded] = useState<boolean>(false);
   // const [desc, setDesc] = useState<string>('');
@@ -47,7 +49,7 @@ const ViewBrand: React.FC<Props> = ({ row }) => {
    * @param value : IBrand
    */
   const handleSubmit = async (value: IBrand) => {
-    const addItem = { ...value, image, status, slug: '' };
+    const addItem = { ...value, images: image, status, slug: '' };
     console.log('addItem', addItem);
 
     let res: AxiosResponse<any>;
@@ -73,18 +75,28 @@ const ViewBrand: React.FC<Props> = ({ row }) => {
     }
   };
 
-  // const titleCard = (params: string) => {
-  //   return (
-  //     <Space>
-  //       {t[params]}
-  //       <Switch />
-  //     </Space>
-  //   );
-  // };
+  const handleChangeUpload: UploadProps['onChange'] = async ({ file }) => {
+    // console.log('file upload', file);
+    const { response } = file;
+    if (file?.status === 'done') {
+      setImage({
+        url: response?.image?.secure_url,
+        uid: response?.image?.public_id,
+      });
+    }
+    if (file?.status === 'removed') {
+      console.log('removed', response);
+
+      const res = await deleteFileBrand(response?.image?.public_id || file.uid);
+      if (res?.data?.success) {
+        setImage({});
+      }
+    }
+  };
 
   const uploadButton = (
     <div>
-      <icon.AiOutlinePlus />
+      <AiOutlinePlus />
       <div style={{ marginTop: 8 }}>Upload</div>
     </div>
   );
@@ -122,27 +134,23 @@ const ViewBrand: React.FC<Props> = ({ row }) => {
               editorLoaded
             /> */}
         </Item>
-        <Item name="slug" label={t.url}>
+        {/* <Item name="slug" label={t.url}>
           <Input />
-        </Item>
-        <Item name="image" label={t.image} valuePropName="file">
+        </Item> */}
+        <Item label={t.image} valuePropName="file">
           <Upload
-            showUploadList={false}
-            listType="picture"
-            maxCount={1}
-            customRequest={async (info) => {
-              // console.log('info', info);
-              // setFileList(info);
-              if (info.file) {
-                await getBase64(info.file as RcFile).then((thumb: string | any) => {
-                  // console.log('thumb', thumb);
-                  setImage(thumb);
-                });
-              }
+            listType="picture-card"
+            defaultFileList={row?.images?.uid ? [{ ...row?.images }] : []}
+            action={`${baseUrl}/v1/brand/upload`}
+            headers={{
+              authorization: `Bearer ${getUser()?.token}`,
             }}
+            name="image"
+            maxCount={1}
+            onChange={handleChangeUpload}
           >
-            <Button icon={<icon.AiOutlinePlus />}>Upload (Max: 1)</Button>
-            {/* {uploadButton} */}
+            {/* <Button icon={<AiOutlinePlus />}>Upload (Max: 1)</Button> */}
+            {uploadButton}
           </Upload>
         </Item>
       </Card>

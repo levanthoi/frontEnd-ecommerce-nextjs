@@ -30,3 +30,14 @@ export async function deleteProduct(params: any) {
 
   return http.delete(`/v1/product/delete/${params}`);
 }
+
+export async function uploadProduct(params: any) {
+  return http.post(`/v1/product/upload`, params, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+}
+export async function deleteImageProduct(params: any) {
+  return http.delete(`/v1/product/upload/${params}`);
+}

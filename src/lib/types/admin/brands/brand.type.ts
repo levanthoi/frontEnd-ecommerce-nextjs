@@ -4,5 +4,5 @@ export interface IBrand {
   title: string;
   slug: string;
   description?: string;
-  image?: string;
+  images?: any;
 }

@@ -28,6 +28,7 @@ import { Notification } from '@/components/UI/Notification';
 import { ItemCate, useGetCateProd } from '@/hooks/useGetCateProd';
 // import { getBase64 } from '@/utils/helpers';
 import { getUser } from '@/utils/getToken';
+import { baseUrl } from '@/utils/baseUrl';
 // import { RootState } from '@/redux/reducers/rootReducer';
 
 interface Props {
@@ -159,7 +160,7 @@ const ViewCategory: React.FC<Props> = ({ row }) => {
         <Item name="image" label={t.image} valuePropName="file">
           <Upload
             method="PUT"
-            action={`http://localhost:5000/api/v1/prodCate/upload/${image?.uid}`}
+            action={`${baseUrl}/v1/prodCate/upload/${image?.uid}`}
             // onRemove={handleRemoveImage}
             // showUploadList={row ? true : false}
             headers={{

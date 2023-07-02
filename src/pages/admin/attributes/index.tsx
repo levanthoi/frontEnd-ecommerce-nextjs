@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import type { ColumnsType, TableProps } from 'antd/es/table';
 import { Button, Popconfirm, Space, Switch, Table, Tag } from 'antd';
 // icon
-import * as icon from '@/icons';
+import { AiOutlineDelete, AiOutlineEdit, AiOutlineClose, AiOutlineCheck } from 'react-icons/ai';
 // other
 import { useLanguage } from '@/hooks/useLanguage';
 import { deleteAttribute, getAttribute } from '@/services/attribute.service';
@@ -100,8 +100,8 @@ const Attributes: NextPage = () => {
       // width: '10%',
       render: (text) => (
         <Switch
-          checkedChildren={<icon.AiOutlineCheck />}
-          unCheckedChildren={<icon.AiOutlineClose />}
+          checkedChildren={<AiOutlineCheck />}
+          unCheckedChildren={<AiOutlineClose />}
           checked={text}
         />
       ),
@@ -112,9 +112,9 @@ const Attributes: NextPage = () => {
       // width: '10%',
       render: (_, record) => (
         <Space wrap>
-          <Button type="primary" icon={<icon.AiOutlineEdit />} onClick={() => handleEdit(record)} />
+          <Button type="primary" icon={<AiOutlineEdit />} onClick={() => handleEdit(record)} />
           <Popconfirm title="Chắc chắn xóa?" onConfirm={() => handleDelete(record)}>
-            <Button type="primary" danger icon={<icon.AiOutlineDelete />} />
+            <Button type="primary" danger icon={<AiOutlineDelete />} />
           </Popconfirm>
         </Space>
       ),

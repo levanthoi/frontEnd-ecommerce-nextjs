@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import type { ColumnsType, TableProps } from 'antd/es/table';
 import { Button, Image, Popconfirm, Space, Switch, Table } from 'antd';
 // icon
-import * as icon from '@/icons';
+import { AiOutlineCheck, AiOutlineDelete, AiOutlineEdit, AiOutlineClose } from 'react-icons/ai';
 // other
 import { useLanguage } from '@/hooks/useLanguage';
 import { IBrand } from '@/lib/types/admin/brands/brand.type';
@@ -79,8 +79,10 @@ const Brands: NextPage = () => {
     },
     {
       title: t.image,
-      dataIndex: 'image',
-      render: (text, record) => <Image src={text} alt={record.title} width={150} height={100} />,
+      dataIndex: 'images',
+      render: (text, record) => (
+        <Image src={text?.url} alt={record.title} width={150} height={100} />
+      ),
       // width: '15%',
     },
     {
@@ -94,8 +96,8 @@ const Brands: NextPage = () => {
       // width: '10%',
       render: (text) => (
         <Switch
-          checkedChildren={<icon.AiOutlineCheck />}
-          unCheckedChildren={<icon.AiOutlineClose />}
+          checkedChildren={<AiOutlineCheck />}
+          unCheckedChildren={<AiOutlineClose />}
           checked={text}
         />
       ),
@@ -106,9 +108,9 @@ const Brands: NextPage = () => {
       // width: '10%',
       render: (_, record) => (
         <Space wrap>
-          <Button type="primary" icon={<icon.AiOutlineEdit />} onClick={() => handleEdit(record)} />
+          <Button type="primary" icon={<AiOutlineEdit />} onClick={() => handleEdit(record)} />
           <Popconfirm title="Chắc chắn xóa?" onConfirm={() => handleDelete(record)}>
-            <Button type="primary" danger icon={<icon.AiOutlineDelete />} />
+            <Button type="primary" danger icon={<AiOutlineDelete />} />
           </Popconfirm>
         </Space>
       ),

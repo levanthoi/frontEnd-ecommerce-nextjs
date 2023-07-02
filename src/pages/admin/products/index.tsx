@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 
 // antd
 import type { ColumnsType, TableProps } from 'antd/es/table';
-import { Button, Popconfirm, Space, Switch, Table } from 'antd';
+import { Button, Image, Popconfirm, Space, Switch, Table } from 'antd';
 import { AxiosResponse } from 'axios';
 // icon
 import { AiOutlineClose, AiOutlineCheck, AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
@@ -36,6 +36,12 @@ const Products: NextPage = () => {
       dataIndex: '_id',
       // width: '10%',
       render: (text, _, index) => index + 1,
+    },
+    {
+      title: t.image,
+      dataIndex: ['images', 'url'],
+      width: '10%',
+      render: (text, _) => <Image src={text || ''} alt="image" />,
     },
     {
       title: t.name,

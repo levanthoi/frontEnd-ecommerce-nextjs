@@ -22,12 +22,12 @@ export async function getoneBrand(params: any) {
   return http.get(`/v1/brand/getone/${id}`);
 }
 export async function updateBrand(params: any) {
-  console.log('params update', params);
   const { id, payload } = params;
   return http.put(`/v1/brand/update/${id}`, payload);
 }
 export async function deleteBrand(params: any) {
-  console.log('id', params);
-
   return http.delete(`/v1/brand/delete/${params}`);
+}
+export async function deleteFileBrand(params: any) {
+  return http.delete(`/v1/brand/upload/${params}`);
 }

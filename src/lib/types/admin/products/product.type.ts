@@ -18,7 +18,8 @@ export interface IProduct {
   purchasePrice: number;
   quantity: number;
   sold?: number;
-  images?: string[];
+  thumb?: any;
+  images?: any;
   brand?: IBrand;
   category?: ICateProd;
   shop?: IShop['shop'];

@@ -27,3 +27,6 @@ export async function deleteShop(params: any) {
 
   return http.delete(`/v1/shop/delete/${params}`);
 }
+export async function deleteFileShop(params: any) {
+  return http.delete(`/v1/shop/upload/${params}`);
+}
