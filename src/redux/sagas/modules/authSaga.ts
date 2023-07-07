@@ -2,7 +2,7 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { call, put, all, takeLatest } from 'redux-saga/effects';
 import type { AxiosResponse } from 'axios';
 import { loginSuccess, loginFailure } from '@/redux/reducers/modules/auth';
-import { loginAccount } from '@/services/userService';
+import { loginAccount } from '@/services/user.service';
 import { IAuth } from '@/lib/types/auth';
 
 function* login(action: PayloadAction<IAuth>) {

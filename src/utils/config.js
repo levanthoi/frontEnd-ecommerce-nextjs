@@ -12,12 +12,14 @@ const http = axios.create({
 http.interceptors.request.use(
   (config) => {
     // console.log('data', Cookies.get('data'));
-    const user = Cookies.get('data') ? JSON.parse(Cookies.get('data')) : null;
-    // console.log('token', user);
+    const acccessToken = Cookies.get('acccessToken')
+      ? JSON.parse(Cookies.get('accessToken'))
+      : null;
+    console.log('token', acccessToken);
     const cf = config;
-    if (user) {
+    if (acccessToken) {
       // config.headers["Authorization"] = 'Bearer ' + token;  // for Spring Boot back-end
-      cf.headers.authorization = `Bearer ${user.token}`; // for Node.js Express back-end
+      cf.headers.authorization = `Bearer ${acccessToken}`; // for Node.js Express back-end
     }
 
     // console.log('cf', cf);
