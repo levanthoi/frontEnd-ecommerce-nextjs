@@ -17,6 +17,7 @@ import {
   TbBrandBlogger,
   TbReplace,
   TbUsers,
+  TbBrandShopee,
 } from 'react-icons/tb';
 //
 // import Cookies from 'js-cookie';
@@ -48,6 +49,13 @@ const itemMenu = [
     type: '',
     children: null,
     icon: <TbLayoutDashboard />,
+  },
+  {
+    key: 'sales',
+    label: 'sales',
+    type: '',
+    children: null,
+    icon: <TbBrandShopee />,
   },
   {
     key: 'manageProduct',

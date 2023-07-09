@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { IBreadcrumb } from '@/lib/types/breadcrumb.type';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const BreadCrumb = () => {
   const router = useRouter();
+  const { t } = useLanguage();
   const [breadcrumbs, setBreadcrumbs] = useState<IBreadcrumb[] | []>([]);
   // console.log('router', <router></router>);
   useEffect(() => {
@@ -37,7 +39,7 @@ const BreadCrumb = () => {
           <li key={breadcrumb?.slug} className="flex items-center">
             <span className="mb-1 text-lg mx-3">{index === 0 ? '' : '>'}</span>
             <Link href={breadcrumb.slug} className="capitalize">
-              <span className="text-lg font-semibold">{breadcrumb.breadcrumb}</span>
+              <span className="text-lg font-semibold">{t[breadcrumb.breadcrumb]}</span>
             </Link>
           </li>
         ))}

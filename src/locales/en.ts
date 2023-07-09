@@ -55,6 +55,7 @@ const en: { [key: string]: string } = {
   blogs: 'Blogs',
   blog: 'Blog',
   coupons: 'Coupons',
+  sales: 'Sales',
   // column
   image: 'Image',
   name: 'Name',
