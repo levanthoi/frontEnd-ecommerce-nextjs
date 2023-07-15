@@ -60,10 +60,11 @@ interface Props {
 
 interface IVariant {
   image?: {
-    uid: string;
+    uid?: string;
     url?: string;
-    name: string;
+    name?: string;
   };
+  unit: string;
   variant: string;
   variantPrice: number;
   sku: string;
@@ -77,7 +78,7 @@ interface IValAttribute {
 const ViewProduct: React.FC<Props> = ({ row }) => {
   const { t, locale } = useLanguage();
   const router = useRouter();
-  const [form] = Form.useForm<IShop>();
+  const [form] = Form.useForm<IProduct>();
   const { Item, List } = Form;
 
   const [status, setStatus] = useState<boolean>(true);
@@ -95,10 +96,12 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
   const { attributes } = useGetAttributes();
 
   // images
-  const [thumb, setThumb] = useState<any | {}>(row?.images);
+  const [thumb, setThumb] = useState<IVariant['image'] | {}>(row?.images);
   // const [images, setImages] = useState<string[]>([]);
 
   const fetch = useCallback(async () => {
+    console.log('fetch');
+
     const query = {
       fields: '',
     };
@@ -142,6 +145,8 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
   const handleValAttr = (val: string[]) => {
     // console.log('value', val);
     // console.log('form', form.getFieldValue('variants'));
+    const name = form.getFieldValue('title') || '';
+    const unit = form.getFieldValue('unit') || '';
     const unitPrice = form.getFieldValue('unitPrice');
     const variants = form.getFieldValue('variants');
     const valVariants = variants?.map((variant: any) => variant.value);
@@ -152,10 +157,11 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
       //   url:"",
       //   name: ""
       // },
-      variant: item?.join('-'),
+      variant: `${name} ${item}`,
       variantPrice: unitPrice,
       sku: `-${item?.join('-')}`,
       stock: 1,
+      unit,
     }));
     setDataSource(combinations);
   };
@@ -183,8 +189,23 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
    * @description : submit form
    * @param value : IShop
    */
-  const handleSubmit = async (value: IShop) => {
-    const addItem = { ...value, details: dataSource, status, images: thumb };
+  const handleSubmit = async (values: IProduct) => {
+    const { title, stockTotal, sku, unitPrice, unit } = values;
+    let newDetails = dataSource;
+    if (dataSource.length === 0) {
+      newDetails = [
+        {
+          variant: title,
+          image: thumb || {},
+          stock: Number(stockTotal),
+          variantPrice: Number(unitPrice),
+          sku: sku || '',
+          unit: unit || '',
+        },
+      ];
+    }
+
+    const addItem = { ...values, details: newDetails, status, images: thumb };
     console.log('addItem', addItem);
 
     let res: AxiosResponse<any>;
@@ -386,13 +407,13 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
       <Select.Option value="exclude">{t.exclude}</Select.Option>
     </Select>
   );
-  // const initialValues = {
-  //   shop: shops[0]?._id || '',
-  //   productType: 'physical',
-  //   category: categories[0]?.value || '',
-  //   brands: brands[0]?._id || '',
-  //   unit: units[0]?.label || '',
-  // };
+  const initialValues = {
+    shop: shops[0]?._id || '',
+    productType: 'physical',
+    category: categories[0]?.value || '',
+    brands: brands[0]?._id || '',
+    unit: units[0]?.label || '',
+  };
   // console.log('pre-render ViewProduct 198', nameVariant);
   // console.log('pre-render attrVal', attrVal);
   // console.log('pre-render attrVar', attrVar);
@@ -404,10 +425,9 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
       layout="vertical"
       labelCol={{ span: 12 }}
       autoComplete="off"
-      // initialValues={initialValues}
+      initialValues={initialValues}
       onFinish={handleSubmit}
     >
-      {/* <Space direction="vertical"> */}
       <Card
         title={row ? t.edit : t.addNew}
         extra={
@@ -568,16 +588,22 @@ const ViewProduct: React.FC<Props> = ({ row }) => {
                   <Input addonAfter={taxAfter} />
                 </Item>
               </Col>
-              {/* <Col>
-                <Card title="as">as</Card>
-              </Col> */}
             </Row>
-
-            <Row>
-              <Col span={24}>
-                <Table columns={columns} dataSource={dataSource} rowKey="sku" />
-              </Col>
-            </Row>
+            {dataSource?.length > 0 ? (
+              <Row>
+                <Col span={24}>
+                  <Table columns={columns} dataSource={dataSource} rowKey="sku" />
+                </Col>
+              </Row>
+            ) : (
+              <Row>
+                <Col span={6}>
+                  <Item name="stockTotal" label={t.stock}>
+                    <InputNumber min={1} />
+                  </Item>
+                </Col>
+              </Row>
+            )}
           </Card>
         </Col>
       </Row>

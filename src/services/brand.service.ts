@@ -3,11 +3,7 @@ import http from '@/utils/config';
 export async function createBrand(params: any) {
   // console.log(http);
   // console.log('process', process.env.NEXT_PUBLIC_API_SERVER_V1);
-  return http.post(`/v1/brand`, params, {
-    headers: {
-      'Content-type': 'multipart/form-data',
-    },
-  });
+  return http.post(`/v1/brand`, params);
 }
 export async function getBrand(params: any) {
   const { fields } = params;

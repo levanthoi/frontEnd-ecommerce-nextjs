@@ -1,19 +1,20 @@
 import type { RcFile } from 'antd/es/upload/interface';
 
-export const formatNumber = (locale: string | undefined, number: number) => {
-  let format;
-  if (locale) {
+const formatterCache: Record<string, Intl.NumberFormat> = {};
+
+export const formatNumber = (number: number, locale: string = 'vi'): string => {
+  let format = formatterCache[locale];
+  if (!format) {
     if (locale === 'vi') {
-      format = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(
-        number,
-      );
+      format = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' });
     } else {
-      format = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
-        number,
-      );
+      format = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
     }
+    formatterCache[locale] = format;
   }
-  return format;
+  // console.log('format', format);
+
+  return format.format(number);
 };
 
 export function getBase64(file: RcFile) {

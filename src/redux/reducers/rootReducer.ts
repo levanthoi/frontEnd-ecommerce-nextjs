@@ -2,11 +2,13 @@ import { combineReducers } from '@reduxjs/toolkit';
 import authSlice from './modules/auth';
 import cateProdSlice from './modules/cateProd';
 import tableSlice from './modules/table';
+import orderSlice from './modules/order';
 
 const sliceReducer = {
   [authSlice.name]: authSlice.reducer,
   [cateProdSlice.name]: cateProdSlice.reducer,
   [tableSlice.name]: tableSlice.reducer,
+  [orderSlice.name]: orderSlice.reducer,
 };
 
 // const reducer = (state: ReturnType<typeof sliceReducer>, action: AnyAction) => {

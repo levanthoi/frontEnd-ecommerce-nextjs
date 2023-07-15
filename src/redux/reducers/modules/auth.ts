@@ -16,13 +16,18 @@ const authSlice = createSlice({
   reducers: {
     loginSuccess(state: IAuthRootState<IAuth>, { payload }: PayloadAction<any>) {
       console.log('payload', payload);
-      return { ...state, isLogged: true, data: payload.data, message: payload.message };
+      return {
+        ...state,
+        isLogged: true,
+        data: payload.data,
+        message: payload.message || 'Thành công',
+      };
     },
     loginFailure(state: IAuthRootState<IAuth>, { payload }: PayloadAction<any>) {
       // state.loading = false;
       // state.data = action.payload;
       console.log('asa', payload);
-      return { ...state, message: payload.message, isLogged: false };
+      return { ...state, message: payload.message || 'Thất bại', isLogged: false };
     },
   },
 });

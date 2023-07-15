@@ -14,28 +14,39 @@ export interface IProduct {
   title: string;
   description?: string;
   slug?: string;
-  unitPrice: number;
-  purchasePrice: number;
-  quantity: number;
+  unitPrice?: number;
+  purchasePrice?: number;
+  quantity?: number;
   sold?: number;
   thumb?: any;
   images?: any;
   brand?: IBrand;
   category?: ICateProd;
+  // shop?: {
+  //   shop?: IShop['shop'];
+  // };
   shop?: IShop['shop'];
   variants?: Array<{ _id: string; variant?: string; value: string[] }>;
   // attributes: IAttribute[];
-  discount: string;
-  tax: string;
-  productType: string;
-  sku: string;
-  unit: string;
+  discount?: string;
+  tax?: string;
+  productType?: string;
+  stockTotal?: number;
+  sku?: string;
+  unit?: string;
   ratings?: IRating[];
   details?: Array<{
+    image?: {
+      uid: string;
+      url: string;
+    };
     variant: string;
     stock: number;
     sku: string;
     variantPrice: number;
+    unit: string;
+    _id?: string;
   }>;
   totalRatings?: string;
+  status: boolean;
 }

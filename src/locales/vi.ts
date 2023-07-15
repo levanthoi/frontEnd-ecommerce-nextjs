@@ -55,6 +55,7 @@ const vi: { [key: string]: string } = {
   blogs: 'Tin tức',
   blog: 'Tin tức',
   coupons: 'Phiếu mua hàng',
+  sales: 'Bán hàng',
   // column category
   image: 'Ảnh',
   name: 'Tên',
@@ -65,7 +66,7 @@ const vi: { [key: string]: string } = {
   // product
   productName: 'Tên sản phẩm',
   productPrice: 'Giá sản phẩm',
-  stock: '  Số lượng tồn kho',
+  stock: '  Tồn kho',
   priceStock: 'Giá sản phẩm và Số lượng tồn kho',
   shop: 'Cửa hàng',
   content: 'Nội dung',
@@ -73,6 +74,7 @@ const vi: { [key: string]: string } = {
   productType: 'Loại sản phẩm',
   sku: 'Mã sản phẩm Sku',
   unit: 'Đơn vị',
+  price: 'Giá',
   variations: 'Biến thể',
   attributes: 'Thuộc tính',
   attributeName: 'Tên thuộc tính',
@@ -82,6 +84,8 @@ const vi: { [key: string]: string } = {
   tags: 'Thẻ',
   quantity: 'Số lượng',
   totalQuantity: 'Tổng số lượng',
+  money: 'Thành tiền',
+  totalPrice: 'Tổng tiền',
   unitPrice: 'Giá bán',
   purchasePrice: 'Giá mua',
   taxModel: 'Mô hình thuế',
