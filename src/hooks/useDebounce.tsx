@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 export const useDebounce = (query: string, second: number) => {
   const [debouncedValue, setDebouncedValue] = useState<string>(query);
+  console.log('debounced');
 
   useEffect(() => {
     const timer = setTimeout(() => {

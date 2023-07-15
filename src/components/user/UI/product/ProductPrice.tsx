@@ -12,8 +12,8 @@ const ProductPrice: React.FC<Props> = ({ price }) => {
   // const format
   return (
     <div className="flex flex-row items-center">
-      <ins className="no-underline text-base font-bold">{formatNumber(locale || '', price)}</ins>
-      <del className="mx-2 text-rose-800 text-xs">{formatNumber(locale || '', price)}</del>
+      <ins className="no-underline text-base font-bold">{formatNumber(price, locale)}</ins>
+      <del className="mx-2 text-rose-800 text-xs">{formatNumber(price, locale)}</del>
     </div>
   );
 };

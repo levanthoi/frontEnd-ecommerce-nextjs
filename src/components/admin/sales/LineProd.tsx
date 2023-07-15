@@ -1,17 +1,49 @@
-import React, { useState } from 'react';
-import { Select, Table } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Button, Input, Select, Space, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { IDataType } from '@/lib/types/admin/orders/order.type';
+import { useSelector, useDispatch } from 'react-redux';
+import { IDataType, IOrder } from '@/lib/types/admin/orders/order.type';
 
 import { useLanguage } from '@/hooks/useLanguage';
+import { RootState } from '@/redux/reducers/rootReducer';
+import { formatNumber } from '@/utils/helpers';
 
 const LineProd: React.FC = () => {
   // const { Option } = Select;
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
+  const dispatch = useDispatch();
+  const [dataSource, setDataSource] = useState<IOrder[]>([]);
 
-  const [dataSource, setDataSource] = useState<IDataType[]>([]);
+  const { data } = useSelector((state: RootState) => state.order);
 
-  const columns: ColumnsType<IDataType> = [
+  console.log('aaa', data);
+  useEffect(() => {
+    if (data && data.length > 0) {
+      const x = data?.map((item) => {
+        return { ...item, totalPrice: item.quantity * item.variantPrice };
+      });
+      console.log('xxx', x);
+
+      setDataSource(x);
+    }
+  }, [data]);
+
+  // handle Increase
+  const handleIncrease = (record: IOrder) => {
+    dispatch({
+      type: 'order/increase',
+      payload: record,
+    });
+  };
+  // handle Decrease
+  const handleDecrease = (record: IOrder) => {
+    dispatch({
+      type: 'order/decrease',
+      payload: record,
+    });
+  };
+
+  const columns: ColumnsType<IOrder> = [
     {
       title: 'STT',
       dataIndex: '_id',
@@ -21,7 +53,7 @@ const LineProd: React.FC = () => {
     },
     {
       title: t.name,
-      dataIndex: 'title',
+      dataIndex: 'variant',
       // render: (text: string) => <p>{text}</p>,
     },
     {
@@ -31,23 +63,34 @@ const LineProd: React.FC = () => {
     },
     {
       title: t.stock,
-      dataIndex: 'stockTotal',
+      dataIndex: 'stock',
+      width: '10%',
       // render: (text: string) => <p>{text}</p>,
     },
     {
       title: t.quantity,
       dataIndex: 'quantity',
-      // render: (text: string) => <p>{text}</p>,
+      render: (text: string, record: IOrder) => (
+        <Space>
+          <Button type="primary" size="small" onClick={() => handleDecrease(record)}>
+            -
+          </Button>
+          <Input value={record?.quantity} size="small" style={{ width: '40px' }} />
+          <Button type="primary" size="small" onClick={() => handleIncrease(record)}>
+            +
+          </Button>
+        </Space>
+      ),
     },
     {
       title: t.price,
-      dataIndex: 'unitPrice',
-      // render: (text: string) => <p>{text}</p>,
+      dataIndex: 'variantPrice',
+      render: (text: number) => <p>{formatNumber(text, locale)}</p>,
     },
     {
-      title: t.totalPrice,
+      title: t.money,
       dataIndex: 'totalPrice',
-      // render: (text: string) => <p>{text}</p>,
+      render: (text: number) => <p>{formatNumber(text, locale)}</p>,
     },
   ];
 
@@ -65,7 +108,7 @@ const LineProd: React.FC = () => {
         <span>120000</span>
         <h4>240000</h4>
       </Space> */}
-      <Table columns={columns} dataSource={dataSource} />
+      <Table columns={columns} dataSource={dataSource} rowKey="_id" />
     </div>
   );
 };

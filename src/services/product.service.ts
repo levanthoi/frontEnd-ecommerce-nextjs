@@ -41,3 +41,8 @@ export async function uploadProduct(params: any) {
 export async function deleteImageProduct(params: any) {
   return http.delete(`/v1/product/upload/${params}`);
 }
+export async function searchProduct(params: any) {
+  console.log(params);
+
+  return http.get(`/v1/product/search?q=${params}`);
+}
