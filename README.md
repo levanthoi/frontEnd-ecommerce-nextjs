@@ -41,6 +41,8 @@ An E-commerce site template, implemented with [Next.js](https://nextjs.org/) and
 ## ✨Demo
 
 You can visit Demo: <a href="https://ecommerce-nextjs-neon.vercel.app/">E-commerce</a>
+Username: admin@gmail.com
+Password: 12345678
 
 ## 🔥Features
 
@@ -48,6 +50,11 @@ You can visit Demo: <a href="https://ecommerce-nextjs-neon.vercel.app/">E-commer
 
 - Multi-language (VI-EN)
 - Data Structure & Algorithm: Nested Structure
+### 🔥Undeveloped features
+- Dashboard ( Chưa có API )
+- Bán hàng (Có thể design lại, và viết API Order)
+- Sản phẩm (Thêm option select Thêm mới ở (Cửa hàng, danh mục, nhãn hiệu, Đơn vị) )
+- Đặt hàng (Chưa design, Chưa có API)
 <!-- - Multi-theme (Dark/Light) -->
 
 ## 📃Pages
